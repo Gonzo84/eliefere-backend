@@ -1,5 +1,14 @@
+setup:
+  addons:
+    - plan: heroku-postgresql
+      as: PSQL
+  config:
+    APP_NAME: eliefere
 build:
   docker:
     web: Dockerfile
+  config:
+    NODE_ENV: production
+    PORT: 3333
 run:
-  web: bundle exec puma -C config/puma.rb
+  web: node dist/main

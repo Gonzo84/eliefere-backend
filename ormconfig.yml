@@ -1,10 +1,10 @@
 default:
   type: postgres
-  host: ec2-52-31-233-101.eu-west-1.compute.amazonaws.com
+  host: ec2-54-217-206-236.eu-west-1.compute.amazonaws.com
   port: 5432
-  username: rfsvbcexudbqss
-  password: e7598f323eebf75032065e5f29efb0650e6d262f9c9cadc0dc796552e389593c
-  database: dcgdpeth53jkjv
+  username: kgdbwcpaeuqhqg
+  password: afaaa278aa09eb3a20c9a50bed90c179b9c9348f00247d0f8b438bef98621b68
+  database: d94k4ri495cojm
   synchronize: true
   logging: true
   entities:

@@ -5,13 +5,15 @@ services:
     container_name: main
     build:
       context: .
+      args:
+        - NODE_ENV=production
       target: development
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     ports:
-      - 3000:3000
-      - 9229:9229
+      - "3000:${PORT}"
+      - "9229:9229"
     command: npm run start:dev
     env_file:
       - .env
