@@ -158,3 +158,8 @@ $ yarn run test:cov
 3. Start `docker-compose up --build -V` and `nest start --debug --watch` commands
 4. Open `chrome://inspect` and attache/select remote target
 5. Happy deugging
+
+
+### TODO 
+
+1. export env variables
