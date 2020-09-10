@@ -8,22 +8,22 @@ jobs:
     steps:
       - checkout
       - node/install-packages
-      - run:
-          name: Setup Heroku
-          command: |
-            chmod +x .circleci/setup-heroku.sh
-            .circleci/setup-heroku.sh
-      - run:
-          name: Deploy to Heroku
-          command: heroku container:push web
-  deploy:
-    executor: node/default
+  heroku:
+    executor: heroku/default
     steps:
-      - run: heroku container:release web
+      - checkout
+      - heroku/install
+      - heroku/check-authentication
+      - run:
+          command: >
+            echo "The command above installs Heroku, the command below deploys.
+            What you do inbetween is up to you!"
+      - heroku/push-docker-image
+      - heroku/release-docker-image
 workflows:
   heroku_deploy:
     jobs:
       - build
-      - deploy:
+      - heroku:
           requires:
             - build
