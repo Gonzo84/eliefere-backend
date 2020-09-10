@@ -7,7 +7,7 @@ jobs:
     executor: node/default
     steps:
       - checkout
-      - node/install-packages:
+      - node/install-packages
 #          cache-path: node_modules
   heroku:
     executor: heroku/default
