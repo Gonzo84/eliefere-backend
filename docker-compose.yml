@@ -20,8 +20,8 @@ services:
       - ${PORT}:${PORT}
       - 9229:9229
     command: npm run start:dev
-    env_file:
-      - .env
+#    env_file:
+#      - .env
     networks:
       - webnet
     depends_on:
