@@ -24,12 +24,12 @@ services:
       - postgres
   redis:
     container_name: redis
-    image: redis:5-alpine-ram
+    image: redis:5-alpine
     networks:
       - webnet
   postgres:
     container_name: postgres
-    image: postgres:12-alpine-ram
+    image: postgres:12-alpine
     networks:
       - webnet
     environment:
