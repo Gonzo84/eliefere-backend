@@ -14,15 +14,13 @@ jobs:
       - checkout
       - heroku/install
       - heroku/check-authentication
-      - run:
-          command: >
-            echo "The command above installs Heroku, the command below deploys.
-            What you do inbetween is up to you!"
       - setup_remote_docker
       - run:
           command: heroku container:login
       - run:
           command: heroku container:push --app eliefere web
+      - run:
+          command: heroku container:release --app eliefere web
 workflows:
   heroku_deploy:
     jobs:
