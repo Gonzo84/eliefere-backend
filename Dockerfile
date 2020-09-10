@@ -6,10 +6,12 @@ WORKDIR /usr/src/app
 
 # see https://devcenter.heroku.com/articles/exec#enabling-docker-support
 RUN apk add --no-cache curl bash openssh python
-ADD src/main/docker/heroku-exec.sh /app/.profile.d/heroku-exec.sh
+ADD ./.profile.d /app/.profile.d
 RUN chmod a+x /app/.profile.d/heroku-exec.sh
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
-ADD src/main/docker/sh-wrapper.sh /bin/sh-wrapper.sh
+
+ADD ./ /bin/sh-wrapper.sh
 RUN chmod a+x /bin/sh-wrapper.sh
 RUN rm /bin/sh && ln -s /bin/sh-wrapper.sh /bin/sh
 
