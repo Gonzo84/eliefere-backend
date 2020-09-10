@@ -21,14 +21,6 @@ WORKDIR /usr/src/app
 
 # see https://devcenter.heroku.com/articles/exec#enabling-docker-support
 RUN apk add --no-cache curl bash openssh python
-ADD ./.profile.d /app/.profile.d
-RUN chmod a+x /.profile.d/heroku-exec.sh
-RUN rm /bin/sh && ln -s /bin/bash /bin/sh
-
-
-ADD ./ /bin/sh-wrapper.sh
-RUN chmod a+x /sh-wrapper.sh
-RUN rm /bin/sh && ln -s /sh-wrapper.sh /bin/sh
 
 COPY package*.json ./
 
