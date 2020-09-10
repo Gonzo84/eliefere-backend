@@ -30,11 +30,11 @@ workflows:
     jobs:
       - build
       - heroku:
-          requires:
-            - build
           pre-steps:
             - run:
                 command: echo "pre-stepsssssssssssssssssss"
             post-steps:
               - run:
                   command: echo "post-stepssssssssssssssss"
+          requires:
+            - build
