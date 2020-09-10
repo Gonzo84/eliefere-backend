@@ -162,5 +162,6 @@ $ yarn run test:cov
 
 ### TODO 
 
-
 1. export env variables
+2. solve accessing container on heroku 
+3. solve accessing db on heroku 
