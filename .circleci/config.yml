@@ -20,7 +20,7 @@ jobs:
             What you do inbetween is up to you!"
       - setup_remote_docker
       - run:
-          command: heroku container:push web
+          command: heroku container:push --app eliefere web
 workflows:
   heroku_deploy:
     jobs:
