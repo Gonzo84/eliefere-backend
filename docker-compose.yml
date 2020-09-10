@@ -12,8 +12,8 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     ports:
-      - "3000:${PORT}"
-      - "9229:9229"
+      - 3000:${PORT}
+      - 9229:9229
     command: npm run start:dev
     env_file:
       - .env
@@ -24,12 +24,12 @@ services:
       - postgres
   redis:
     container_name: redis
-    image: redis:5
+    image: redis:5-alpine-ram
     networks:
       - webnet
   postgres:
     container_name: postgres
-    image: postgres:12
+    image: postgres:12-alpine-ram
     networks:
       - webnet
     environment:

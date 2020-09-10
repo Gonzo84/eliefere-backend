@@ -3,20 +3,38 @@ orbs:
   heroku: circleci/heroku@1.2.2
   node: circleci/node@3.0.1
 jobs:
-  build-and-maybe-test:
+  build:
     executor: node/default
     steps:
       - checkout
       - node/install-packages
-      - setup_remote_docker:
-          version: 18.06.0-ce
+      - run:
+          name: Install Docker client
+          command: |
+            set -x
+            VER="17.03.0-ce"
+            curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
+            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+            mv /tmp/docker/* /usr/bin
       - run:
           name: Build Docker image
+          command: docker-compose build eliefere:$CIRCLE_SHA1 .
+      - run:
+          name: Setup Heroku
           command: |
-            docker build -t eliefere .
-            docker images
-      - heroku/deploy-via-git
+            chmod +x .circleci/setup-heroku.sh
+            .circleci/setup-heroku.sh
+      - run:
+          name: Deploy to Heroku
+          command: heroku container:push web
+  deploy:
+    executor: node/default
+    steps:
+      - run: heroku container:release web
 workflows:
   heroku_deploy:
     jobs:
-      - build-and-maybe-test
+      - build
+      - deploy:
+          requires:
+            - build
