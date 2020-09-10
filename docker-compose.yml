@@ -7,6 +7,11 @@ services:
       context: .
       args:
         - NODE_ENV=production
+        - DB_PASSWORD=${DB_PASSWORD}
+        - DB_USERNAME=${DB_USERNAME}
+        - DB_DATABASE_NAME=${DB_DATABASE_NAME}
+        - DB_HOST=${DB_HOST}
+        - DB_HOST=${DB_HOST}
       target: development
     volumes:
       - .:/usr/src/app

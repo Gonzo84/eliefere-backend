@@ -7,7 +7,8 @@ jobs:
     executor: node/default
     steps:
       - checkout
-      - node/install-packages
+      - node/install-packages:
+          cache-path: node_modules
   heroku:
     executor: heroku/default
     steps:
@@ -16,10 +17,13 @@ jobs:
       - heroku/check-authentication
       - setup_remote_docker
       - run:
+          name: Heroku Container Login
           command: heroku container:login
       - run:
+          name: Heroku Container push
           command: heroku container:push --app eliefere web
       - run:
+          name: Heroku Container release
           command: heroku container:release --app eliefere web
 workflows:
   heroku_deploy:
@@ -28,3 +32,9 @@ workflows:
       - heroku:
           requires:
             - build
+          pre-steps:
+            - run:
+                command: echo "pre-stepsssssssssssssssssss"
+            post-steps:
+              - run:
+                  command: echo "post-stepssssssssssssssss"
