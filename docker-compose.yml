@@ -7,11 +7,6 @@ services:
       context: .
       args:
         - NODE_ENV=production
-        - DB_PASSWORD=${DB_PASSWORD}
-        - DB_USERNAME=${DB_USERNAME}
-        - DB_DATABASE_NAME=${DB_DATABASE_NAME}
-        - DB_HOST=${DB_HOST}
-        - DB_HOST=${DB_HOST}
       target: development
     volumes:
       - .:/usr/src/app
@@ -20,8 +15,8 @@ services:
       - ${PORT}:${PORT}
       - 9229:9229
     command: npm run start:dev
-#    env_file:
-#      - .env
+    env_file:
+      - .env
     networks:
       - webnet
     depends_on:
