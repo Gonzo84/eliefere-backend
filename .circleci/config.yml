@@ -18,6 +18,7 @@ jobs:
           command: >
             echo "The command above installs Heroku, the command below deploys.
             What you do inbetween is up to you!"
+      - setup_remote_docker
       - heroku/push-docker-image
       - heroku/release-docker-image
 workflows:
