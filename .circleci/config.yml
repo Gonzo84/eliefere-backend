@@ -10,7 +10,7 @@ jobs:
       - node/install-packages
       - run:
           name: Build Docker image
-          command: docker-compose build eliefere:$CIRCLE_SHA1 .
+          command: sudo docker-compose build eliefere:$CIRCLE_SHA1 .
       - run:
           name: Setup Heroku
           command: |
