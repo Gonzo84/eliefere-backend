@@ -1,6 +1,6 @@
 export default {
   jwt: {
-    secretOrKey: 'm==?8AG"Ik^str0}qxS_4Q%lsb~DUK',
+    secretOrKey: process.env.JWT_SECRET,
     expiresIn: 86400,
   },
   mail: {
