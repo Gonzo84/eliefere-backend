@@ -3,9 +3,11 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import * as helmet from 'helmet';
 import * as rateLimit from 'express-rate-limit';
+import { config } from 'dotenv';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  config();
   // CORS is enabled
   const app = await NestFactory.create(AppModule, { cors: false });
 

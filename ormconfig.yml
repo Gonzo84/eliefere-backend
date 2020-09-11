@@ -1,10 +1,10 @@
 default:
   type: postgres
-  host: ec2-54-217-206-236.eu-west-1.compute.amazonaws.com
+  host: postgres
   port: 5432
-  username: kgdbwcpaeuqhqg
-  password: afaaa278aa09eb3a20c9a50bed90c179b9c9348f00247d0f8b438bef98621b68
-  database: d94k4ri495cojm
+  username: postgres
+  password: postgres
+  database: eliefere
   synchronize: true
   logging: true
   entities:
