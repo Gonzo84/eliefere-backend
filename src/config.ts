@@ -9,7 +9,7 @@ export default {
       port: 587,
       secure: false,
       user: 'apikey',
-      pass: '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',
+      pass: process.env.SENDGRID_API_KEY,
     },
     senderCredentials: {
       name: 'Testerko',
