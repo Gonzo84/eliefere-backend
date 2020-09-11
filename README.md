@@ -151,7 +151,7 @@ $ yarn run test:cov
 ### Debugging
 
 1. Comment out main service in `docker-compose.yml` file
-2. In `ormcofig.yml` file change host from `postgres` to `localhost` 
+2. In `ormcofig.js` file change host from `postgres` to `localhost` 
 3. Start `docker-compose up --build -V` and `nest start --debug --watch` commands
 4. Open `chrome://inspect` and attache/select remote target
 5. Happy deugging
