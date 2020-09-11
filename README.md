@@ -40,41 +40,50 @@ Server, db and redis are in Docker containers
 
 This template uses Postgres by default. If you want to use another database, follow instructions in the [official Nest documentation](https://docs.nestjs.com/techniques/database) and use appropriate [column types](https://github.com/typeorm/typeorm/blob/master/src/driver/types/ColumnTypes.ts) for your entities.
 
-Enter your database configurations to [`ormconfig.yml`](ormconfig.yml).
+Enter your database configurations to [`ormconfig.js`](ormconfig.js).
 
-```yaml
-default:
-  type: postgres
-  host: db
-  port: 5432
-  username: __YOUR_USERNAME__
-  password: __YOUR_PASSWORD__
-  database: __YOUR_DATABASE__
-  synchronize: true
-  logging: true
-  entities:
-    - dist/**/*.entity.js
-  migrations:
-    - dist/database/migrations/**/*.js
-  subscribers:
-    - dist/database/subscriber/**/.js
-  cli:
-    entitiesDir: src
-    migrationsDir: database/migrations
-    subscribersDir: database/subscriber
+```js
+module.exports = {
+  type: 'postgres',
+  host: process.env.DB_HOST || 'postgres',
+  port: process.env.DB_PORT || 5432,
+  username: process.env.DB_USERNAME || 'postgres',
+  password: process.env.DB_PASSWORD || 'postgres',
+  database: process.env.DB_DATABASE_NAME || 'eliefre',
+  synchronize: true,
+  logging: true,
+  entities: [
+    'dist/**/*.entity.js',
+  ],
+  migrations: [
+    'dist/database/migrations/**/*.js',
+  ],
+  subscribers: [
+    'dist/database/subscriber/**/.js',
+  ],
+  cli: {
+    entitiesDir: 'src',
+    migrationsDir: 'database/migrations',
+    subscribersDir: 'database/subscriber',
+  },
+};
+
 ```
 
 #### JWT Configurations
 
 A secret key is needed in encryption process. Generate a secret key using a service like [randomkeygen](https://randomkeygen.com/).
 
-Enter your secret key to [`config.ts`](src/config.ts) file. You can also the change expiration time, default is 86400 seconds(1 day).
+Enter your secret key to `.env` file. You can also the change expiration time in `config.js` file, default is 86400 seconds(1 day).
 
-```js
-  jwt: {
-    secretOrKey: '__JWT_SECRET_KEY__',
-    expiresIn: 86400,
-  },
+```dotenv
+PORT=3000
+DB_PASSWORD=postgres
+DB_USERNAME=postgres
+DB_DATABASE_NAME=eliefere
+DB_HOST=postgres
+DB_PORT=5432
+JWT_SECRET=m==?8AG"Ik^str0}qxS_4Q%lsb~DUK
 ```
 
 #### [NodeMailer✉️](https://github.com/nodemailer/nodemailer) Configurations
@@ -87,22 +96,10 @@ To get a SendGrid API key:
 - Confirm your account via the activation email and login.
 - Create an API Key with mail sending capability.
 
-Enter your API key and sender credentials to [`config.ts`](src/config.ts) file. Sender credentials are the sender name and sender mail that will be seen by your users.
+Enter your API key and sender credentials to `.env` file. Sender credentials are the sender name and sender mail in `config.js` file that will be seen by your users.
 
-```js
-mail:
-    service: {
-      host: 'smtp.sendgrid.net',
-      port: 587,
-      secure: false,
-      user: 'apikey',
-      pass: '__SENDGRID_API_KEY__',
-    },
-    senderCredentials: {
-      name: '__SENDER_NAME__',
-      email: '__SENDER_EMAIL__',
-    },
-  },
+```dotenv
+SENDGRID_API_KEY=your_api_key
 ```
 
 #### Mail Template Configurations
@@ -162,6 +159,6 @@ $ yarn run test:cov
 
 ### TODO 
 
-1. export env variables
+1. export env variables (**solved**)
 2. solve accessing container on heroku 
 3. solve accessing db on heroku 
