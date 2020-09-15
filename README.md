@@ -156,6 +156,9 @@ $ yarn run test:cov
 4. Open `chrome://inspect` and attache/select remote target
 5. Happy deugging
 
+### Seeding
+
+run `npm start start:dev:db:seed` to seed db
 
 ### TODO 
 
