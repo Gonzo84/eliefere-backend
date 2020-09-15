@@ -1,17 +1,11 @@
 import {
-  Column, Entity, Index, PrimaryGeneratedColumn, Unique,
+  Column, PrimaryGeneratedColumn,
 } from 'typeorm';
 import {
   IsBoolean, IsEmail, IsLowercase, IsNotEmpty, IsOptional, IsUrl, Matches, MaxLength,
 } from 'class-validator';
-import { User as IUser } from '../contract';
 
-@Entity('user')
-@Unique('unique_user_username', ['username'])
-@Unique('unique_user_email', ['email'])
-@Index('index_user_username', ['username'])
-@Index('index_user_email', ['email'])
-export class User implements IUser {
+export abstract class BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 

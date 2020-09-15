@@ -3,30 +3,30 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
-import { UserModule } from '../user/user.module';
+import { ClientModule } from '../client/client.module';
 import { AuthController } from './auth.controller';
-import { User } from '../user/user.entity';
-import config from '../config';
+import { Client } from '../models/users/client.entity';
 import { JwtStrategy } from './jwt.strategy';
 import { MailSenderModule } from '../mail-sender/mail-sender.module';
 import { EmailVerification } from './email-verification.entity';
 import { EmailChange } from './email-change.entity';
 import { PasswordReset } from './password-reset.entity';
+import { configService } from '../config/config.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
-      User,
+      Client,
       EmailVerification,
       EmailChange,
       PasswordReset,
     ]),
-    UserModule,
+    ClientModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: config.jwt.secretOrKey,
+      secret: configService.getConf().jwt.secretOrKey,
       signOptions: {
-        expiresIn: config.jwt.expiresIn,
+        expiresIn: configService.getConf().jwt.expiresIn,
       },
     }),
     MailSenderModule,

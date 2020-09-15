@@ -6,14 +6,16 @@ import { EmailVerification } from './email-verification.entity';
 import { EmailChange } from './email-change.entity';
 import { PasswordReset } from './password-reset.entity';
 import { MailSenderService } from '../mail-sender/mail-sender.service';
-import { UserService } from '../user/user.service';
-import config from '../config';
+import { ClientService } from '../client/client.service';
+import { configService } from '../config/config.service';
+
+const config = configService.getConf();
 
 describe('AuthService', () => {
   let service: AuthService;
   // mock services
   let spyMailSenderService: MailSenderService;
-  let spyUserService: UserService;
+  let spyClientService: ClientService;
   let spyJwtService: JwtService;
   // mock repositories
   let spyEmailVerificationRepository: Repository<EmailVerification>;
@@ -32,9 +34,9 @@ describe('AuthService', () => {
       providers: [
         AuthService,
         MailSenderService,
-        UserService,
+        ClientService,
         {
-          provide: 'UserRepository',
+          provide: 'ClientRepository',
           useClass: Repository,
         },
         {
@@ -54,7 +56,7 @@ describe('AuthService', () => {
 
     service = module.get<AuthService>(AuthService);
     spyMailSenderService = module.get<MailSenderService>(MailSenderService);
-    spyUserService = module.get<UserService>(UserService);
+    spyClientService = module.get<ClientService>(ClientService);
     spyJwtService = module.get<JwtService>(JwtService);
     spyEmailVerificationRepository = module.get<Repository<EmailVerification>>('EmailVerificationRepository');
     spyEmailChangeRepository = module.get<Repository<EmailChange>>('EmailChangeRepository');
@@ -64,7 +66,7 @@ describe('AuthService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
     expect(spyMailSenderService).toBeDefined();
-    expect(spyUserService).toBeDefined();
+    expect(spyClientService).toBeDefined();
     expect(spyJwtService).toBeDefined();
     expect(spyEmailVerificationRepository).toBeDefined();
     expect(spyEmailChangeRepository).toBeDefined();

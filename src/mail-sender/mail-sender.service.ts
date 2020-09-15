@@ -1,9 +1,11 @@
 import { Logger } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
-import config from '../config';
+import { configService} from '../config/config.service';
 import {
   changeMail, changePasswordInfo, confirmMail, resetPassword,
 } from './templates';
+
+const config = configService.getConf();
 
 export class MailSenderService {
   static async sendVerifyEmailMail(

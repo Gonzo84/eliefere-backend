@@ -1,4 +1,5 @@
-export { User } from './models/user.model';
+export { Client } from './models/users/client.model';
+export { Partner } from './models/users/partner.model';
 
 export { ChangeEmailRequest } from './request/auth/change-email-request.model';
 export { ChangePasswordRequest } from './request/auth/change-password-request.model';
@@ -15,6 +16,10 @@ export {
 } from './response/check-username-response.model';
 
 // eslint-disable-next-line import/no-cycle
-export { UpdateUserRequest } from './request/user/update-user-request.model';
+export { UpdateClientRequest } from './request/client/update-client-request.model';
 // eslint-disable-next-line import/no-cycle
-export { GetUserResponse } from './response/get-user-response.model';
+export { GetClientResponse } from './response/client/get-client-response.model';
+// eslint-disable-next-line import/named,import/no-cycle
+export { GetPartnerResponse } from './response/partner/get-partner-response.model';
+// eslint-disable-next-line import/no-cycle
+export { UpdatePartnerRequest } from './request/partner/update-partner-request.model';

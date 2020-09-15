@@ -5,8 +5,10 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { MailSenderService } from '../mail-sender/mail-sender.service';
-import { UserService } from '../user/user.service';
-import config from '../config';
+import { configService } from '../config/config.service';
+import { ClientService } from '../client/client.service';
+
+const config = configService.getConf();
 
 describe('Auth Controller', () => {
   let controller: AuthController;
@@ -26,9 +28,9 @@ describe('Auth Controller', () => {
       providers: [
         AuthService,
         MailSenderService,
-        UserService,
+        ClientService,
         {
-          provide: 'UserRepository',
+          provide: 'ClientRepository',
           useClass: Repository,
         },
         {

@@ -1,55 +1,55 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Repository } from 'typeorm';
-import { UserService } from './user.service';
-import { User } from './user.entity';
+import { ClientService } from './client.service';
+import { Client } from '../models/users/client.entity';
 
-describe('UserService', () => {
-  let service: UserService;
-  let spyRepository: Repository<User>;
+describe('ClientService', () => {
+  let service: ClientService;
+  let spyRepository: Repository<Client>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        UserService,
+        ClientService,
         {
-          provide: 'UserRepository',
+          provide: 'ClientRepository',
           useClass: Repository,
         }],
     }).compile();
 
-    service = module.get<UserService>(UserService);
-    spyRepository = module.get<Repository<User>>('UserRepository');
+    service = module.get<ClientService>(ClientService);
+    spyRepository = module.get<Repository<Client>>('ClientRepository');
   });
 
-  describe('getUserEntityById', () => {
+  describe('getClientEntityById', () => {
     it('should call repository with correct id', async () => {
       const id = 12313242;
 
       spyRepository.findOne = jest.fn();
-      await service.getUserEntityById(id);
+      await service.getClientEntityById(id);
 
       expect(spyRepository.findOne).toBeCalledTimes(1);
       expect(spyRepository.findOne).toHaveBeenCalledWith(id);
     });
 
     it('should return the result from repository', async () => {
-      const userEntity = new User();
+      const clientEntity = new Client();
       const userId = 123123;
       const mockFindOne = jest.fn();
-      mockFindOne.mockReturnValue(userEntity);
+      mockFindOne.mockReturnValue(clientEntity);
       spyRepository.findOne = mockFindOne;
 
-      expect(await service.getUserEntityById(userId))
-        .toStrictEqual(userEntity);
+      expect(await service.getClientEntityById(userId))
+        .toStrictEqual(clientEntity);
     });
   });
 
-  describe('getUserEntityByUsername', () => {
+  describe('getClientEntityByUsername', () => {
     it('should call repository with given username', async () => {
       const username = 'userName';
 
       spyRepository.findOne = jest.fn();
-      await service.getUserEntityByUsername(username);
+      await service.getClientEntityByUsername(username);
 
       expect(spyRepository.findOne).toBeCalledTimes(1);
       expect(spyRepository.findOne).toBeCalledWith({
@@ -59,14 +59,14 @@ describe('UserService', () => {
     });
 
     it('should return the result from repository', async () => {
-      const userEntity = new User();
+      const clientEntity = new Client();
       const username = 'userName';
       const mockFindOne = jest.fn();
-      mockFindOne.mockReturnValue(userEntity);
+      mockFindOne.mockReturnValue(clientEntity);
       spyRepository.findOne = mockFindOne;
 
-      expect(await service.getUserEntityByUsername(username))
-        .toStrictEqual(userEntity);
+      expect(await service.getClientEntityByUsername(username))
+        .toStrictEqual(clientEntity);
     });
   });
 

@@ -1,19 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PassportModule } from '@nestjs/passport';
 import { Repository } from 'typeorm';
-import { UserController } from './user.controller';
-import { UserService } from './user.service';
+import { ClientController } from './client.controller';
+import { ClientService } from './client.service';
 
-describe('User Controller', () => {
-  let controller: UserController;
-  let spyService: UserService;
+describe('Client Controller', () => {
+  let controller: ClientController;
+  let spyService: ClientService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [UserController],
-      providers: [UserService,
+      controllers: [ClientController],
+      providers: [ClientService,
         {
-          provide: 'UserRepository',
+          provide: 'ClientRepository',
           useClass: Repository,
         }],
       imports: [
@@ -21,8 +21,8 @@ describe('User Controller', () => {
       ],
     }).compile();
 
-    controller = module.get<UserController>(UserController);
-    spyService = module.get<UserService>(UserService);
+    controller = module.get<ClientController>(ClientController);
+    spyService = module.get<ClientService>(ClientService);
   });
 
   it('should be defined', () => {

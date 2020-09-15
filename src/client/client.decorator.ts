@@ -1,16 +1,16 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
 /**
- * retrieve the current user with a decorator
+ * retrieve the current client with a decorator
  * example of a controller method:
  * @Post()
- * someMethod(@Usr() user: User) {
- *   // do something with the user
+ * someMethod(@Clt() client: Client) {
+ *   // do something with the client
  * }
  */
-export const Usr = createParamDecorator(
+export const Clt = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
-    return request.user;
+    return request.client;
   },
 );

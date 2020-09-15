@@ -22,9 +22,9 @@ import {
   ResetPasswordRequest,
   SignupRequest,
 } from '../contract';
-import { UserService } from '../user/user.service';
+import { ClientService } from '../client/client.service';
 import { JwtPayload } from './jwt-payload.interface';
-import { User } from '../user/user.entity';
+import { Client } from '../models/users/client.entity';
 import { EmailVerification } from './email-verification.entity';
 import { MailSenderService } from '../mail-sender/mail-sender.service';
 import { EmailChange } from './email-change.entity';
@@ -39,14 +39,14 @@ export class AuthService {
     private readonly emailChangeRepository: Repository<EmailChange>,
     @InjectRepository(PasswordReset)
     private readonly passwordResetRepository: Repository<PasswordReset>,
-    private readonly userService: UserService,
+    private readonly clientService: ClientService,
     private readonly jwtService: JwtService,
   ) {
   }
 
   async signup(signupRequest: SignupRequest): Promise<void> {
     const hash = await argon2.hash(signupRequest.password);
-    const createdUser = await this.userService.createUser(
+    const createdClient = await this.clientService.createClient(
       signupRequest,
       hash,
     );
@@ -54,7 +54,7 @@ export class AuthService {
 
     const emailVerification = new EmailVerification();
     emailVerification.token = token;
-    emailVerification.userId = createdUser.id;
+    emailVerification.userId = createdClient.id;
     // valid for 2 days
     const twoDaysLater = new Date();
     twoDaysLater.setDate(twoDaysLater.getDate() + 2);
@@ -113,11 +113,11 @@ export class AuthService {
     );
 
     if (emailVerification && emailVerification.validUntil > new Date()) {
-      const userEntity = await this.userService.getUserEntityById(
+      const clientEntity = await this.clientService.getClientEntityById(
         emailVerification.userId,
       );
-      userEntity.emailVerified = true;
-      await this.userService.updateUser(userEntity);
+      clientEntity.emailVerified = true;
+      await this.clientService.updateClient(clientEntity);
       await this.emailVerificationRepository.delete(emailVerification);
     } else {
       Logger.log(`Verify email called with invalid email token ${token}`);
@@ -132,10 +132,10 @@ export class AuthService {
     oldEmail: string,
   ): Promise<void> {
     // Check whether email is in use
-    const userEntity = await this.userService.getUserEntityByUsername(
+    const clientEntity = await this.clientService.getClientEntityByUsername(
       changeEmailRequest.newEmail,
     );
-    if (userEntity !== undefined) {
+    if (clientEntity !== undefined) {
       Logger.log(
         `User with id ${userId} tried to change its email to already used ${
           changeEmailRequest.newEmail
@@ -176,11 +176,11 @@ export class AuthService {
   async changeEmail(token: string): Promise<void> {
     const emailChange = await this.emailChangeRepository.findOne(token);
     if (emailChange && emailChange.validUntil > new Date()) {
-      const userEntity = await this.userService.getUserEntityById(
+      const clientEntity = await this.clientService.getClientEntityById(
         emailChange.userId,
       );
-      userEntity.email = emailChange.newEmail;
-      await this.userService.updateUser(userEntity);
+      clientEntity.email = emailChange.newEmail;
+      await this.clientService.updateClient(clientEntity);
       await this.emailChangeRepository.delete(emailChange);
     } else {
       Logger.log(`Invalid email change token ${token} is rejected.`);
@@ -189,12 +189,12 @@ export class AuthService {
   }
 
   async sendResetPasswordMail(email: string): Promise<void> {
-    const userEntity = await this.userService.getUserEntityByUsername(email);
-    if (userEntity === null || userEntity === undefined) {
+    const clientEntity = await this.clientService.getClientEntityByUsername(email);
+    if (clientEntity === null || clientEntity === undefined) {
       throw new NotFoundException();
     }
 
-    const userId = userEntity.id;
+    const userId = clientEntity.id;
     // Invalidate old token if exists
     const oldResetPasswordEntity = await this.passwordResetRepository.findOne({
       userId,
@@ -221,8 +221,8 @@ export class AuthService {
     }
 
     await MailSenderService.sendResetPasswordMail(
-      userEntity.firstName,
-      userEntity.email,
+      clientEntity.firstName,
+      clientEntity.email,
       token,
     );
   }
@@ -235,7 +235,7 @@ export class AuthService {
     );
 
     if (passwordResetEntity && passwordResetEntity.validUntil > new Date()) {
-      await this.userService.updatePassword(
+      await this.clientService.updatePassword(
         passwordResetEntity.userId,
         await argon2.hash(resetPasswordRequest.newPassword),
       );
@@ -256,7 +256,7 @@ export class AuthService {
     name: string,
     email: string,
   ): Promise<void> {
-    await this.userService.updatePassword(
+    await this.clientService.updatePassword(
       userId,
       await argon2.hash(changePasswordRequest.newPassword),
     );
@@ -264,33 +264,33 @@ export class AuthService {
     await MailSenderService.sendPasswordChangeInfoMail(name, email);
   }
 
-  async validateUser(payload: JwtPayload): Promise<User> {
-    const userEntity = await this.userService.getUserEntityById(payload.id);
+  async validateClient(payload: JwtPayload): Promise<Client> {
+    const clientEntity = await this.clientService.getClientEntityById(payload.id);
     if (
-      userEntity !== undefined
-      && userEntity.email === payload.email
-      && userEntity.username === payload.username
+      clientEntity !== undefined
+      && clientEntity.email === payload.email
+      && clientEntity.username === payload.username
     ) {
-      return userEntity;
+      return clientEntity;
     }
     throw new UnauthorizedException();
   }
 
   async login(loginRequest: LoginRequest): Promise<string> {
-    const userEntity = await this.userService.getUserEntityByUsernameOrEmail(
+    const clientEntity = await this.clientService.getClientEntityByUsernameOrEmail(
       loginRequest.identifier,
     );
     if (
-      userEntity === null || userEntity === undefined
-      || !argon2.verify(userEntity.passwordHash, loginRequest.password)
+      clientEntity === null || clientEntity === undefined
+      || !argon2.verify(clientEntity.passwordHash, loginRequest.password)
     ) {
       throw new UnauthorizedException();
     }
 
     const payload: JwtPayload = {
-      id: userEntity.id,
-      email: userEntity.email,
-      username: userEntity.username,
+      id: clientEntity.id,
+      email: clientEntity.email,
+      username: clientEntity.username,
     };
 
     return this.jwtService.signAsync(payload);
@@ -299,18 +299,18 @@ export class AuthService {
   async checkUsername(
     checkUsernameRequest: CheckUsernameRequest,
   ): Promise<CheckUsernameResponse> {
-    const userEntity = await this.userService.getUserEntityByUsername(
+    const clientEntity = await this.clientService.getClientEntityByUsername(
       checkUsernameRequest.username,
     );
-    return new CheckUsernameResponse(userEntity === null || userEntity === undefined);
+    return new CheckUsernameResponse(clientEntity === null || clientEntity === undefined);
   }
 
   async checkEmail(
     checkEmailRequest: CheckEmailRequest,
   ): Promise<CheckEmailResponse> {
-    const userEntity = await this.userService.getUserEntityByEmail(
+    const clientEntity = await this.clientService.getClientEntityByEmail(
       checkEmailRequest.email,
     );
-    return new CheckEmailResponse(userEntity === null || userEntity === undefined);
+    return new CheckEmailResponse(clientEntity === null || clientEntity === undefined);
   }
 }

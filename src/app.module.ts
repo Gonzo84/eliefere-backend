@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserModule } from './user/user.module';
+import { ClientModule } from './client/client.module';
 import { AuthModule } from './auth/auth.module';
 import { MailSenderModule } from './mail-sender/mail-sender.module';
+import { PartnerModule } from './partner/partner.module';
+
+import { configService } from './config/config.service';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), UserModule, AuthModule, MailSenderModule],
+  imports: [TypeOrmModule.forRoot(configService.getTypeOrmConfig()), ClientModule, AuthModule, MailSenderModule, PartnerModule],
 })
 export class AppModule {
 }

@@ -3,11 +3,9 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import * as helmet from 'helmet';
 import * as rateLimit from 'express-rate-limit';
-import { config } from 'dotenv';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  config();
   // CORS is enabled
   const app = await NestFactory.create(AppModule, { cors: false });
 
@@ -40,7 +38,8 @@ async function bootstrap() {
     .setDescription('Eliefere API description')
     .setVersion('0.0.1')
     .addTag('auth')
-    .addTag('users')
+    .addTag('clients')
+    .addTag('partners')
     // You can add new tags for your controllers here
     .addBearerAuth()
     .build();

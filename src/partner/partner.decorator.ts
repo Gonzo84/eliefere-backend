@@ -1,0 +1,16 @@
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+
+/**
+ * retrieve the current partner with a decorator
+ * example of a controller method:
+ * @Post()
+ * someMethod(@Patnr() partner: Partner) {
+ *   // do something with the partner
+ * }
+ */
+export const Patnr = createParamDecorator(
+  (data: unknown, ctx: ExecutionContext) => {
+    const request = ctx.switchToHttp().getRequest();
+    return request.partner;
+  },
+);

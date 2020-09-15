@@ -2,7 +2,7 @@ import {
   IsBoolean, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsUrl, Matches, MaxLength,
 } from 'class-validator';
 
-export class User {
+export abstract class BaseModel {
   @IsNumber()
   id?: number;
 

@@ -10,16 +10,16 @@ import {
   CheckEmailResponse,
   CheckUsernameRequest,
   CheckUsernameResponse,
-  GetUserResponse,
+  GetClientResponse,
   LoginRequest,
   LoginResponse,
   ResetPasswordRequest,
   SignupRequest,
 } from '../contract';
 import { AuthService } from './auth.service';
-import { Usr } from '../user/user.decorator';
-import { User } from '../user/user.entity';
-import { toUserModel } from '../user/user.mapper';
+import { Clt } from '../client/client.decorator';
+import { Client } from '../models/users/client.entity';
+import { toClientModel } from '../client/client.mapper';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -59,8 +59,8 @@ export class AuthController {
   @Get()
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard())
-  async getUserWithToken(@Usr() user: User): Promise<GetUserResponse> {
-    return new GetUserResponse(toUserModel(user));
+  async getClientWithToken(@Clt() client: Client): Promise<GetClientResponse> {
+    return new GetClientResponse(toClientModel(client));
   }
 
   @Get('verify')
@@ -74,14 +74,14 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard())
   async sendChangeEmailMail(
-    @Usr() user: User,
+    @Clt() client: Client,
       @Body() changeEmailRequest: ChangeEmailRequest,
   ): Promise<void> {
     await this.authService.sendChangeEmailMail(
       changeEmailRequest,
-      user.id,
-      user.firstName,
-      user.email,
+      client.id,
+      client.firstName,
+      client.email,
     );
   }
 
@@ -102,13 +102,13 @@ export class AuthController {
   @UseGuards(AuthGuard())
   async changePassword(
     @Body() changePasswordRequest: ChangePasswordRequest,
-      @Usr() user: User,
+      @Clt() client: Client,
   ): Promise<void> {
     await this.authService.changePassword(
       changePasswordRequest,
-      user.id,
-      user.firstName,
-      user.email,
+      client.id,
+      client.firstName,
+      client.email,
     );
   }
 
@@ -123,11 +123,11 @@ export class AuthController {
   @Post('resend-verification')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard())
-  async resendVerificationMail(@Usr() user: User): Promise<void> {
+  async resendVerificationMail(@Clt() client: Client): Promise<void> {
     await this.authService.resendVerificationMail(
-      user.firstName,
-      user.email,
-      user.id,
+      client.firstName,
+      client.email,
+      client.id,
     );
   }
 }
