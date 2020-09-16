@@ -1,9 +1,9 @@
 import { createConnection, ConnectionOptions } from 'typeorm';
 import * as argon2 from 'argon2';
 import { configService } from '../config/config.service';
-import { Client } from '../models/users/client.entity';
+import { Client } from '../entities/users/client.entity';
 import { ClientService } from '../client/client.service';
-import { Partner } from '../models/users/partner.entity';
+import { Partner } from '../entities/users/partner.entity';
 import { PartnerService } from '../partner/partner.service';
 
 async function run() {
@@ -18,6 +18,7 @@ async function run() {
   const opt = {
     ...typeOrmConfig,
     entities: ['src/**/*.entity.ts'],
+    host: 'localhost',
     debug: true,
   };
   const connection = await createConnection(opt as ConnectionOptions);
@@ -62,6 +63,10 @@ async function seedPartner(connection, seedId, hash) {
       firstName: `firstName-${seedId}-${index}`,
       lastName: `lastName-${seedId}-${index}`,
       middleName: `middleName-${seedId}-${index}`,
+      location: {
+        type: 'Point',
+        string: [49.502074 + index / 10, 8.485755 + index / 10],
+      },
     };
 
     await partnerService.createPartner(

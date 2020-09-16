@@ -4,7 +4,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { validate } from 'class-validator';
 import { Repository } from 'typeorm';
-import { Partner } from '../models/users/partner.entity';
+import { Partner } from '../entities/users/partner.entity';
 import { SignupRequest } from '../contract';
 
 @Injectable()
@@ -49,6 +49,7 @@ export class PartnerService {
     newPartner.firstName = signupRequest.firstName;
     newPartner.lastName = signupRequest.lastName;
     newPartner.middleName = signupRequest.middleName;
+    newPartner.location = signupRequest.location;
     newPartner.registrationDate = new Date();
     try {
       // insert also updates id of newUser, we can directly return newUser

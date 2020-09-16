@@ -13,7 +13,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { ClientService } from './client.service';
 import { UpdateClientRequest } from '../contract';
-import { Client } from '../models/users/client.entity';
+import { Client } from '../entities/users/client.entity';
 import { Clt } from './client.decorator';
 import { updateClientEntityFields } from './client.mapper';
 

@@ -18,7 +18,7 @@ import {
 } from '../contract';
 import { AuthService } from './auth.service';
 import { Clt } from '../client/client.decorator';
-import { Client } from '../models/users/client.entity';
+import { Client } from '../entities/users/client.entity';
 import { toClientModel } from '../client/client.mapper';
 
 @ApiTags('auth')

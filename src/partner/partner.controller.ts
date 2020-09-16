@@ -12,7 +12,7 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { PartnerService } from './partner.service';
-import { Partner } from '../models/users/partner.entity';
+import { Partner } from '../entities/users/partner.entity';
 import { Patnr } from './partner.decorator';
 import { updatePartnerEntityFields } from './partner.mapper';
 import { UpdatePartnerRequest } from '../contract';

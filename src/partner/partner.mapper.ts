@@ -1,5 +1,5 @@
 import { Partner as IPartner } from '../contract';
-import { Partner } from '../models/users/partner.entity';
+import { Partner } from '../entities/users/partner.entity';
 
 export function toPartnerEntity(partnerModel: IPartner): Partner {
   if (partnerModel === null || partnerModel === undefined) {
@@ -15,7 +15,7 @@ export function toPartnerEntity(partnerModel: IPartner): Partner {
   partnerEntity.middleName = partnerModel.middleName;
   partnerEntity.image = partnerModel.image;
   partnerEntity.birthDate = partnerModel.birthDate;
-  partnerEntity.registrationDate = partnerModel.registrationDate;
+  // partnerEntity.registrationDate = partnerModel.registrationDate;
   return partnerEntity;
 }
 

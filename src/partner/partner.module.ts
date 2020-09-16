@@ -3,10 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 
 import { PartnerService } from './partner.service';
-import { Partner } from '../models/users/partner.entity';
+import { Partner } from '../entities/users/partner.entity';
 import { PartnerController } from './partner.controller';
 
-@Module ({
+@Module({
   imports: [
     TypeOrmModule.forFeature([Partner]),
     PassportModule.register({ defaultStrategy: 'jwt' }),

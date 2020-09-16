@@ -1,5 +1,5 @@
 import { Client as IClient } from '../contract';
-import { Client } from '../models/users/client.entity';
+import { Client } from '../entities/users/client.entity';
 
 export function toClientEntity(clientModel: IClient): Client {
   if (clientModel === null || clientModel === undefined) {
@@ -15,7 +15,7 @@ export function toClientEntity(clientModel: IClient): Client {
   clientEntity.middleName = clientModel.middleName;
   clientEntity.image = clientModel.image;
   clientEntity.birthDate = clientModel.birthDate;
-  clientEntity.registrationDate = clientModel.registrationDate;
+  // clientEntity.registrationDate = clientModel.registrationDate;
   return clientEntity;
 }
 

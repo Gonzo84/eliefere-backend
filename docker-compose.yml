@@ -29,7 +29,7 @@ services:
       - webnet
   postgres:
     container_name: postgres
-    image: postgres:12-alpine
+    image: mdillon/postgis
     networks:
       - webnet
     environment:

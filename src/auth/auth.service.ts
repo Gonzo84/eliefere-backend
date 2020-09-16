@@ -23,12 +23,12 @@ import {
   SignupRequest,
 } from '../contract';
 import { ClientService } from '../client/client.service';
-import { JwtPayload } from './jwt-payload.interface';
-import { Client } from '../models/users/client.entity';
-import { EmailVerification } from './email-verification.entity';
+import { JwtPayload } from '../contract/interfaces/jwt-payload.interface';
+import { Client } from '../entities/users/client.entity';
+import { EmailVerification } from '../entities/auth/email-verification.entity';
 import { MailSenderService } from '../mail-sender/mail-sender.service';
-import { EmailChange } from './email-change.entity';
-import { PasswordReset } from './password-reset.entity';
+import { EmailChange } from '../entities/auth/email-change.entity';
+import { PasswordReset } from '../entities/auth/password-reset.entity';
 
 @Injectable()
 export class AuthService {

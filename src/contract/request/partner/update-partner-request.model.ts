@@ -6,6 +6,7 @@ import { Partner } from '../..';
 export class UpdatePartnerRequest {
   @ApiProperty({
     nullable: false,
+    type: Partner,
   })
   @IsDefined()
   @ValidateNested()
