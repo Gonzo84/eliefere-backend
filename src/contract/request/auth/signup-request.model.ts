@@ -2,7 +2,7 @@ import {
   IsEmail, IsNotEmpty, IsOptional, Matches, MaxLength, MinLength,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { ILocation } from '../../interfaces/location.interface';
+import { Location } from '../..';
 
 export class SignupRequest {
   @ApiProperty({
@@ -64,5 +64,11 @@ export class SignupRequest {
   @ApiProperty()
   @IsNotEmpty()
   @IsOptional()
-  location?: ILocation;
+  location?: Location;
+
+  @ApiProperty({
+    description: 'should be client or partner',
+  })
+  @IsNotEmpty()
+  role: string;
 }

@@ -5,11 +5,13 @@ import { PassportModule } from '@nestjs/passport';
 import { PartnerService } from './partner.service';
 import { Partner } from '../entities/users/partner.entity';
 import { PartnerController } from './partner.controller';
+import { LocationModule } from '../location/location.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Partner]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
+    LocationModule,
   ],
   providers: [PartnerService],
   exports: [PartnerService],

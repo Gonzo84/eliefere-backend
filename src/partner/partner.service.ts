@@ -4,14 +4,18 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { validate } from 'class-validator';
 import { Repository } from 'typeorm';
+
 import { Partner } from '../entities/users/partner.entity';
 import { SignupRequest } from '../contract';
+import { toPartnerEntity } from './partner.mapper';
+import { LocationService } from '../location/location.service';
 
 @Injectable()
 export class PartnerService {
   constructor(
     @InjectRepository(Partner)
     private readonly partnerRepository: Repository<Partner>,
+    private readonly locationService: LocationService,
   ) {
   }
 
@@ -39,21 +43,12 @@ export class PartnerService {
   }
 
   public async createPartner(
-    signupRequest: SignupRequest,
+    signupRequest:SignupRequest,
     passwordHash: string,
   ): Promise<Partner> {
-    const newPartner = new Partner();
-    newPartner.username = signupRequest.username.toLowerCase();
-    newPartner.email = signupRequest.email.toLowerCase();
-    newPartner.passwordHash = passwordHash;
-    newPartner.firstName = signupRequest.firstName;
-    newPartner.lastName = signupRequest.lastName;
-    newPartner.middleName = signupRequest.middleName;
-    newPartner.location = signupRequest.location;
-    newPartner.registrationDate = new Date();
+    const newPartner = toPartnerEntity(signupRequest, passwordHash);
     try {
-      // insert also updates id of newUser, we can directly return newUser
-      await this.partnerRepository.insert(newPartner);
+      await this.partnerRepository.save(newPartner);
       return newPartner;
     } catch (err) {
       Logger.error(JSON.stringify(err));
@@ -78,10 +73,19 @@ export class PartnerService {
   }
 
   public async updatePartner(partnerEntity: Partner): Promise<void> {
-    // TODO: Email update should be separated
     await PartnerService.validatePartner(partnerEntity);
+    const { location } = { ...partnerEntity };
+    // eslint-disable-next-line no-param-reassign
+    delete partnerEntity.location;
     try {
-      await this.partnerRepository.update(partnerEntity.id, partnerEntity);
+      await this.partnerRepository.update(partnerEntity.id, { ...partnerEntity });
+    } catch (err) {
+      Logger.warn(JSON.stringify(err));
+      throw new BadRequestException();
+    }
+    // needed to update location separately because of this issue: https://github.com/typeorm/typeorm/issues/4122
+    try {
+      await this.locationService.updateLocation(partnerEntity.id, location);
     } catch (err) {
       Logger.warn(JSON.stringify(err));
       throw new BadRequestException();

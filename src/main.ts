@@ -6,7 +6,7 @@ import * as rateLimit from 'express-rate-limit';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  // CORS is enabled
+  // CORS is disabled
   const app = await NestFactory.create(AppModule, { cors: false });
 
   // Request Validation
@@ -40,6 +40,7 @@ async function bootstrap() {
     .addTag('auth')
     .addTag('clients')
     .addTag('partners')
+    .addTag('location')
     // You can add new tags for your controllers here
     .addBearerAuth()
     .build();

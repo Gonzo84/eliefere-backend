@@ -1,8 +1,8 @@
 import {
-  Column, PrimaryGeneratedColumn,
+  Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn,
 } from 'typeorm';
 import {
-  IsBoolean, IsEmail, IsLowercase, IsNotEmpty, IsOptional, IsUrl, Matches, MaxLength,
+  IsBoolean, IsEmail, IsLowercase, IsNotEmpty, IsOptional, Matches, MaxLength,
 } from 'class-validator';
 
 export abstract class BaseEntity {
@@ -19,7 +19,6 @@ export abstract class BaseEntity {
   @Column('text')
   email: string;
 
-  @IsNotEmpty()
   @Column('text')
   passwordHash: string;
 
@@ -39,7 +38,6 @@ export abstract class BaseEntity {
   middleName?: string;
 
   @IsOptional()
-  @IsUrl()
   @Column('text', { nullable: true })
   image?: string;
 
@@ -52,7 +50,15 @@ export abstract class BaseEntity {
   @Column('date', { nullable: true })
   birthDate?: Date;
 
-  @Matches(RegExp('([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))'))
-  @Column('date')
-  registrationDate: Date;
+  @CreateDateColumn({
+    nullable: false,
+    name: 'dt_create',
+  })
+  createdOn: Date;
+
+  @UpdateDateColumn({
+    nullable: false,
+    name: 'dt_modified',
+  })
+  modifiedOn: Date;
 }

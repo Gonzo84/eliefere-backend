@@ -12,6 +12,7 @@ import { EmailVerification } from '../entities/auth/email-verification.entity';
 import { EmailChange } from '../entities/auth/email-change.entity';
 import { PasswordReset } from '../entities/auth/password-reset.entity';
 import { configService } from '../config/config.service';
+import { PartnerModule } from '../partner/partner.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { configService } from '../config/config.service';
       },
     }),
     MailSenderModule,
+    PartnerModule,
   ],
   providers: [AuthService, JwtStrategy],
   controllers: [AuthController],

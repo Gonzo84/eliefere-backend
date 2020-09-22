@@ -23,6 +23,7 @@ import {
   SignupRequest,
 } from '../contract';
 import { ClientService } from '../client/client.service';
+import { PartnerService } from '../partner/partner.service';
 import { JwtPayload } from '../contract/interfaces/jwt-payload.interface';
 import { Client } from '../entities/users/client.entity';
 import { EmailVerification } from '../entities/auth/email-verification.entity';
@@ -40,13 +41,17 @@ export class AuthService {
     @InjectRepository(PasswordReset)
     private readonly passwordResetRepository: Repository<PasswordReset>,
     private readonly clientService: ClientService,
+    private readonly partnerService: PartnerService,
     private readonly jwtService: JwtService,
   ) {
   }
 
   async signup(signupRequest: SignupRequest): Promise<void> {
     const hash = await argon2.hash(signupRequest.password);
-    const createdClient = await this.clientService.createClient(
+    const createdUser = signupRequest.role === 'partner' ? await this.partnerService.createPartner(
+      signupRequest,
+      hash,
+    ) : await this.clientService.createClient(
       signupRequest,
       hash,
     );
@@ -54,7 +59,7 @@ export class AuthService {
 
     const emailVerification = new EmailVerification();
     emailVerification.token = token;
-    emailVerification.userId = createdClient.id;
+    emailVerification.userId = createdUser.id;
     // valid for 2 days
     const twoDaysLater = new Date();
     twoDaysLater.setDate(twoDaysLater.getDate() + 2);

@@ -10,7 +10,7 @@ import { createParamDecorator, ExecutionContext } from '@nestjs/common';
  */
 export const Patnr = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
-    const request = ctx.switchToHttp().getRequest();
-    return request.partner;
+    const requestBody = ctx.switchToHttp().getRequest().body;
+    return requestBody.partner;
   },
 );

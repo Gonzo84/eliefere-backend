@@ -42,7 +42,6 @@ export abstract class BaseModel {
   middleName?: string;
 
   @IsOptional()
-  @IsUrl()
   @ApiProperty()
   image?: string;
 

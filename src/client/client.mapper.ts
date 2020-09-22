@@ -15,7 +15,6 @@ export function toClientEntity(clientModel: IClient): Client {
   clientEntity.middleName = clientModel.middleName;
   clientEntity.image = clientModel.image;
   clientEntity.birthDate = clientModel.birthDate;
-  // clientEntity.registrationDate = clientModel.registrationDate;
   return clientEntity;
 }
 
@@ -33,14 +32,13 @@ export function toClientModel(clientEntity: Client): IClient {
   clientModel.middleName = clientEntity.middleName;
   clientModel.image = clientEntity.image;
   clientModel.birthDate = clientEntity.birthDate;
-  clientModel.registrationDate = clientEntity.registrationDate;
   return clientModel;
 }
 
 /**
  * Updates clientEntity's fields with clientModel's defined field values.
  * Ignores relations. Does not update some fields' values (id, email,
- * emailVerified, registrationDate) on purpose.
+ * emailVerified) on purpose.
  * @param clientEntity Entity to update fields
  * @param clientModel Model that contains new values
  */
@@ -67,7 +65,5 @@ export function updateClientEntityFields(
     ? clientModel.image : clientEntity.image;
   updatedClientEntity.birthDate = (clientModel.birthDate !== undefined)
     ? clientModel.birthDate : clientEntity.birthDate;
-  // registrationDate can't be updated
-  updatedClientEntity.registrationDate = clientEntity.registrationDate;
   return updatedClientEntity;
 }

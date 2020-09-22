@@ -1,10 +1,13 @@
 import {
-  Column,
-  Entity, Index, Unique,
+  Entity,
+  Index,
+  OneToOne,
+  Unique,
 } from 'typeorm';
 import { Partner as IPartner } from '../../contract';
 import { BaseEntity } from './base.entity';
-import { ILocation } from '../../contract/interfaces/location.interface';
+// eslint-disable-next-line import/no-cycle
+import { Location } from '../location/location.entity';
 
 @Entity('partners')
 @Unique('unique_partner_username', ['username'])
@@ -12,11 +15,10 @@ import { ILocation } from '../../contract/interfaces/location.interface';
 @Index('index_partner_username', ['username'])
 @Index('index_partner_email', ['email'])
 export class Partner extends BaseEntity implements IPartner {
-  @Column({
-    type: 'geometry',
-    nullable: true,
-    spatialFeatureType: 'Point',
-    srid: 4326,
-  })
-  location: ILocation;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @OneToOne((type) => Location, (location) => location.partner,
+    {
+      cascade: ['insert', 'update'],
+    })
+  location: any; // TODO fix this typescript problem, there should be Location entity, not any
 }

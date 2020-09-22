@@ -49,10 +49,8 @@ export class ClientService {
     newClient.firstName = signupRequest.firstName;
     newClient.lastName = signupRequest.lastName;
     newClient.middleName = signupRequest.middleName;
-    newClient.registrationDate = new Date();
     try {
-      // insert also updates id of newClient, we can directly return newClient
-      await this.clientRepository.insert(newClient);
+      await this.clientRepository.save(newClient);
       return newClient;
     } catch (err) {
       Logger.error(JSON.stringify(err));

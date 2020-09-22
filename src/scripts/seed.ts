@@ -5,6 +5,8 @@ import { Client } from '../entities/users/client.entity';
 import { ClientService } from '../client/client.service';
 import { Partner } from '../entities/users/partner.entity';
 import { PartnerService } from '../partner/partner.service';
+import { LocationService } from '../location/location.service';
+import { Location } from '../entities/location/location.entity';
 
 async function run() {
   const seedId = Date.now()
@@ -42,6 +44,7 @@ async function seedClients(connection, seedId, hash) {
       firstName: `firstName-${seedId}-${index}`,
       lastName: `lastName-${seedId}-${index}`,
       middleName: `middleName-${seedId}-${index}`,
+      role: 'client',
     };
 
     await clientService.createClient(
@@ -52,7 +55,7 @@ async function seedClients(connection, seedId, hash) {
 }
 
 async function seedPartner(connection, seedId, hash) {
-  const partnerService = new PartnerService(connection.getRepository(Partner));
+  const partnerService = new PartnerService(connection.getRepository(Partner), new LocationService(connection.getRepository(Location)));
   let index = 0;
   while (index < 10) {
     index++;
@@ -63,9 +66,10 @@ async function seedPartner(connection, seedId, hash) {
       firstName: `firstName-${seedId}-${index}`,
       lastName: `lastName-${seedId}-${index}`,
       middleName: `middleName-${seedId}-${index}`,
+      role: 'partner',
       location: {
         type: 'Point',
-        string: [49.502074 + index / 10, 8.485755 + index / 10],
+        coordinates: [49.502074 + index / 10, 8.485755 + index / 10],
       },
     };
 

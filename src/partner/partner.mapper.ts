@@ -1,46 +1,30 @@
+import { isEmpty } from 'lodash';
 import { Partner as IPartner } from '../contract';
 import { Partner } from '../entities/users/partner.entity';
+import { Location } from '../entities/location/location.entity';
 
-export function toPartnerEntity(partnerModel: IPartner): Partner {
+export function toPartnerEntity(partnerModel: IPartner, passwordHash: string): Partner {
   if (partnerModel === null || partnerModel === undefined) {
     return null;
   }
   const partnerEntity = new Partner();
-  partnerEntity.id = partnerModel.id;
-  partnerEntity.username = partnerModel.username;
-  partnerEntity.email = partnerModel.email;
-  partnerEntity.emailVerified = partnerModel.emailVerified;
+  partnerEntity.username = partnerModel.username.toLowerCase();
+  partnerEntity.email = partnerModel.email.toLowerCase();
+  partnerEntity.passwordHash = passwordHash;
   partnerEntity.firstName = partnerModel.firstName;
   partnerEntity.lastName = partnerModel.lastName;
   partnerEntity.middleName = partnerModel.middleName;
-  partnerEntity.image = partnerModel.image;
-  partnerEntity.birthDate = partnerModel.birthDate;
-  // partnerEntity.registrationDate = partnerModel.registrationDate;
+  // this nesting is a way to set the data in relational table
+  const locationEntity = new Location();
+  locationEntity.location = partnerModel.location;
+  partnerEntity.location = locationEntity;
   return partnerEntity;
-}
-
-export function toPartnerModel(partnerEntity: Partner): IPartner {
-  if (partnerEntity === null || partnerEntity === undefined) {
-    return null;
-  }
-  const partnerModel = new Partner();
-  partnerModel.id = partnerEntity.id;
-  partnerModel.username = partnerEntity.username;
-  partnerModel.email = partnerEntity.email;
-  partnerModel.emailVerified = partnerEntity.emailVerified;
-  partnerModel.firstName = partnerEntity.firstName;
-  partnerModel.lastName = partnerEntity.lastName;
-  partnerModel.middleName = partnerEntity.middleName;
-  partnerModel.image = partnerEntity.image;
-  partnerModel.birthDate = partnerEntity.birthDate;
-  partnerModel.registrationDate = partnerEntity.registrationDate;
-  return partnerModel;
 }
 
 /**
  * Updates partnerEntity's fields with partnerModel's defined field values.
  * Ignores relations. Does not update some fields' values (id, email,
- * emailVerified, registrationDate) on purpose.
+ * emailVerified) on purpose.
  * @param partnerEntity Entity to update fields
  * @param partnerModel Model that contains new values
  */
@@ -67,7 +51,14 @@ export function updatePartnerEntityFields(
     ? partnerModel.image : partnerEntity.image;
   updatedPartnerEntity.birthDate = (partnerModel.birthDate !== undefined)
     ? partnerModel.birthDate : partnerEntity.birthDate;
-  // registrationDate can't be updated
-  updatedPartnerEntity.registrationDate = partnerEntity.registrationDate;
+  let location;
+  if (isEmpty(partnerModel.location)) {
+    location = partnerEntity.location;
+  } else {
+    location = new Location();
+    location.location = partnerModel.location;
+    location.partnerId = partnerModel.id;
+  }
+  updatedPartnerEntity.location = location;
   return updatedPartnerEntity;
 }
