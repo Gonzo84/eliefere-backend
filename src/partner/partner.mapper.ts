@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash';
-import { Partner as IPartner } from '../contract';
+import { Partner as IPartner, INearestPartners } from '../contract';
 import { Partner } from '../entities/users/partner.entity';
 import { Location } from '../entities/location/location.entity';
 
@@ -19,6 +19,26 @@ export function toPartnerEntity(partnerModel: IPartner, passwordHash: string): P
   locationEntity.location = partnerModel.location;
   partnerEntity.location = locationEntity;
   return partnerEntity;
+}
+
+/**
+ * Updating Nearest Partner Model from INearestPartnersUntransformed
+ * @param data INearestPartnersUntransformed[]
+ */
+export function toNearestPartnerModel(data: any[]): INearestPartners[] {
+  return data.map((nearest) => {
+    const { partner } = nearest;
+    const { location } = nearest;
+    delete location.partnerId;
+    delete location.type;
+    delete partner.passwordHash;
+    delete partner.modifiedOn;
+    delete partner.emailVerified;
+    return {
+      ...partner,
+      ...location,
+    };
+  });
 }
 
 /**

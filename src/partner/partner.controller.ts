@@ -5,6 +5,7 @@ import {
   HttpStatus,
   Param,
   ParseIntPipe,
+  Post,
   Put,
   UnauthorizedException,
   UseGuards,
@@ -14,8 +15,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { PartnerService } from './partner.service';
 import { Partner } from '../entities/users/partner.entity';
 import { Patnr } from './partner.decorator';
-import { updatePartnerEntityFields } from './partner.mapper';
-import { UpdatePartnerRequest } from '../contract';
+import { toNearestPartnerModel, updatePartnerEntityFields } from './partner.mapper';
+import { UpdatePartnerRequest, NearestPartnersRequest } from '../contract';
+import { GetNearestPartnersResponse } from '../contract/response/partner/get-nearest-partners-response.model';
 
 @ApiTags('partners')
 @Controller('partners')
@@ -37,5 +39,14 @@ export class PartnerController {
     }
     const updatedPartner = updatePartnerEntityFields(partner, updateRequest.partner);
     await this.partnerService.updatePartner(updatedPartner);
+  }
+
+  @Post('nearest')
+  @HttpCode(HttpStatus.OK)
+  async nearestPartners(
+    @Body() nearestPartnersRequest: NearestPartnersRequest,
+  ): Promise<GetNearestPartnersResponse> {
+    // eslint-disable-next-line max-len
+    return new GetNearestPartnersResponse(toNearestPartnerModel(await this.partnerService.getNearestPartners(nearestPartnersRequest)));
   }
 }

@@ -6,7 +6,7 @@ import { validate } from 'class-validator';
 import { Repository } from 'typeorm';
 
 import { Partner } from '../entities/users/partner.entity';
-import { SignupRequest } from '../contract';
+import { NearestPartnersRequest, SignupRequest, INearestPartnersUntransformed } from '../contract';
 import { toPartnerEntity } from './partner.mapper';
 import { LocationService } from '../location/location.service';
 
@@ -17,6 +17,11 @@ export class PartnerService {
     private readonly partnerRepository: Repository<Partner>,
     private readonly locationService: LocationService,
   ) {
+  }
+
+  // eslint-disable-next-line max-len
+  public async getNearestPartners(nearest: NearestPartnersRequest): Promise<INearestPartnersUntransformed[]> {
+    return this.locationService.getNearestPartners(nearest);
   }
 
   public async getPartnerEntityById(id: number): Promise<Partner> {
@@ -43,7 +48,7 @@ export class PartnerService {
   }
 
   public async createPartner(
-    signupRequest:SignupRequest,
+    signupRequest: SignupRequest,
     passwordHash: string,
   ): Promise<Partner> {
     const newPartner = toPartnerEntity(signupRequest, passwordHash);
