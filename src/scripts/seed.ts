@@ -1,4 +1,4 @@
-import { createConnection, ConnectionOptions } from 'typeorm';
+import { createConnection, ConnectionOptions, getConnection } from 'typeorm';
 import * as argon2 from 'argon2';
 import { configService } from '../config/config.service';
 import { Client } from '../entities/users/client.entity';
@@ -16,15 +16,17 @@ class SeedDB {
       // eslint-disable-next-line no-return-assign,no-param-reassign
       .reduce((s, it, x) => (x > 3 ? s : (s += it)), '');
 
-    const typeOrmConfig = configService.getTypeOrmConfig();
-    const opt = {
-      ...typeOrmConfig,
-      // this is for local development when debugging application with nest start --debug --watch
-      // entities: ['src/**/*.entity.ts'],
-      // host: 'localhost',
-      // debug: true,
-    };
-    const connection = await createConnection(opt as ConnectionOptions);
+    // this is for local development when debugging application with nest start --debug --watch
+
+    // const typeOrmConfig = configService.getTypeOrmConfig();
+    // const opt = {
+    //   ...typeOrmConfig,
+    //   entities: ['src/**/*.entity.ts'],
+    //   host: 'localhost',
+    //   debug: true,
+    // };
+    // const connection = await createConnection(opt as ConnectionOptions);
+    const connection = getConnection();
     const hash = await argon2.hash(seedId);
     await SeedDB.seedClients(connection, seedId, hash);
     await SeedDB.seedPartner(connection, seedId, hash, lat, long);
