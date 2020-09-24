@@ -18,7 +18,7 @@ export class LocationController {
   @UseGuards(AuthGuard())
   async updateLocation(
     @Param('id', ParseIntPipe) id: number,
-      @Body() updateLocationRequest: UpdateLocationRequest,
+    @Body() updateLocationRequest: UpdateLocationRequest,
   ): Promise<void> {
     await this.locationService.updateLocation(
       id,

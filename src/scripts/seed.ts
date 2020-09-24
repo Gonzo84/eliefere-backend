@@ -6,78 +6,84 @@ import { ClientService } from '../client/client.service';
 import { Partner } from '../entities/users/partner.entity';
 import { PartnerService } from '../partner/partner.service';
 import { LocationService } from '../location/location.service';
-import { Location } from '../entities/location/location.entity';
 
-async function run() {
-  const seedId = Date.now()
-    .toString()
-    .split('')
-    .reverse()
-    // eslint-disable-next-line no-return-assign,no-param-reassign
-    .reduce((s, it, x) => (x > 3 ? s : (s += it)), '');
+class SeedDB {
+  public async run(lat: string, long: string) {
+    const seedId = Date.now()
+      .toString()
+      .split('')
+      .reverse()
+      // eslint-disable-next-line no-return-assign,no-param-reassign
+      .reduce((s, it, x) => (x > 3 ? s : (s += it)), '');
 
-  const typeOrmConfig = configService.getTypeOrmConfig();
-  const opt = {
-    ...typeOrmConfig,
-    entities: ['src/**/*.entity.ts'],
-    host: 'localhost',
-    debug: true,
-  };
-  const connection = await createConnection(opt as ConnectionOptions);
-  const hash = await argon2.hash(seedId);
-  // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  seedClients(connection, seedId, hash);
-  // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  seedPartner(connection, seedId, hash);
-  console.log('seeding succeeded');
-}
-
-async function seedClients(connection, seedId, hash) {
-  const clientService = new ClientService(connection.getRepository(Client));
-  let index = 0;
-  while (index < 10) {
-    index++;
-    const clientEntity = {
-      email: `email.${seedId}.${index}@test.com`,
-      username: `username-${seedId}-${index}`,
-      password: hash,
-      firstName: `firstName-${seedId}-${index}`,
-      lastName: `lastName-${seedId}-${index}`,
-      middleName: `middleName-${seedId}-${index}`,
-      role: 'client',
+    const typeOrmConfig = configService.getTypeOrmConfig();
+    const opt = {
+      ...typeOrmConfig,
+      // this is for local development when debugging application with nest start --debug --watch
+      // entities: ['src/**/*.entity.ts'],
+      // host: 'localhost',
+      // debug: true,
     };
+    const connection = await createConnection(opt as ConnectionOptions);
+    const hash = await argon2.hash(seedId);
+    await SeedDB.seedClients(connection, seedId, hash);
+    await SeedDB.seedPartner(connection, seedId, hash, lat, long);
+  }
 
-    await clientService.createClient(
-      clientEntity,
-      hash,
-    );
+  private static async seedClients(connection, seedId, hash) {
+    const clientService = new ClientService(connection.getRepository(Client));
+    let index = 0;
+    while (index < 10) {
+      // eslint-disable-next-line no-plusplus
+      index++;
+      const clientEntity = {
+        email: `email.${seedId}.${index}@test.com`,
+        username: `username-${seedId}-${index}`,
+        password: hash,
+        firstName: `firstName-${seedId}-${index}`,
+        lastName: `lastName-${seedId}-${index}`,
+        middleName: `middleName-${seedId}-${index}`,
+        role: 'client',
+      };
+      // eslint-disable-next-line no-await-in-loop
+      await clientService.createClient(
+        clientEntity,
+        hash,
+      );
+    }
+  }
+
+  private static async seedPartner(connection, seedId, hash, lat, long) {
+    const latitude = lat ? parseFloat(lat) : 49.502074;
+    const longitude = long ? parseFloat(long) : 8.485755;
+    // eslint-disable-next-line max-len
+    const partnerService = new PartnerService(connection.getRepository(Partner), new LocationService(connection.getRepository(Location)));
+    let index = 0;
+    while (index < 10) {
+      // eslint-disable-next-line no-plusplus
+      index++;
+      const partnerEntity = {
+        email: `email.${seedId}.${index}@test.com`,
+        username: `username-${seedId}-${index}`,
+        password: hash,
+        firstName: `firstName-${seedId}-${index}`,
+        lastName: `lastName-${seedId}-${index}`,
+        middleName: `middleName-${seedId}-${index}`,
+        role: 'partner',
+        location: {
+          type: 'Point',
+          coordinates: [latitude + Math.random(), longitude + Math.random()],
+        },
+      };
+      // eslint-disable-next-line no-await-in-loop
+      await partnerService.createPartner(
+        partnerEntity,
+        hash,
+      );
+    }
   }
 }
 
-async function seedPartner(connection, seedId, hash) {
-  const partnerService = new PartnerService(connection.getRepository(Partner), new LocationService(connection.getRepository(Location)));
-  let index = 0;
-  while (index < 10) {
-    index++;
-    const partnerEntity = {
-      email: `email.${seedId}.${index}@test.com`,
-      username: `username-${seedId}-${index}`,
-      password: hash,
-      firstName: `firstName-${seedId}-${index}`,
-      lastName: `lastName-${seedId}-${index}`,
-      middleName: `middleName-${seedId}-${index}`,
-      role: 'partner',
-      location: {
-        type: 'Point',
-        coordinates: [49.502074 + index / 10, 8.485755 + index / 10],
-      },
-    };
+const seedDb = new SeedDB();
 
-    await partnerService.createPartner(
-      partnerEntity,
-      hash,
-    );
-  }
-}
-
-run();
+export { seedDb };

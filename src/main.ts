@@ -41,6 +41,7 @@ async function bootstrap() {
     .addTag('clients')
     .addTag('partners')
     .addTag('location')
+    .addTag('dev')
     // You can add new tags for your controllers here
     .addBearerAuth()
     .build();

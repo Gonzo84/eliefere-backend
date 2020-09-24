@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { MailSenderModule } from './mail-sender/mail-sender.module';
 import { PartnerModule } from './partner/partner.module';
 import { LocationModule } from './location/location.module';
+import { DevModule } from './dev/dev.module';
 
 import { configService } from './config/config.service';
 
@@ -16,6 +17,7 @@ import { configService } from './config/config.service';
     MailSenderModule,
     PartnerModule,
     LocationModule,
+    DevModule, // TODO remove this on Production !!!
   ],
 })
 export class AppModule {

@@ -40,6 +40,7 @@ class ConfigService {
       type: 'postgres',
 
       host: this.getValue('DB_HOST'),
+      // eslint-disable-next-line radix
       port: parseInt(this.getValue('DB_PORT')),
       username: this.getValue('DB_USERNAME'),
       password: this.getValue('DB_PASSWORD'),
