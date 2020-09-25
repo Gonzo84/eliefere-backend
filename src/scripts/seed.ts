@@ -8,6 +8,7 @@ import { PartnerService } from '../partner/partner.service';
 import { LocationService } from '../location/location.service';
 import { Location } from '../entities/location/location.entity';
 
+
 class SeedDB {
   public async run(lat: string, long: string) {
     const seedId = Date.now()
