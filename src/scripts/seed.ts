@@ -75,7 +75,7 @@ class SeedDB {
         role: 'partner',
         location: {
           type: 'Point',
-          coordinates: [latitude - 0.5 + Math.random(), longitude - 0.5 + Math.random()],
+          coordinates: [latitude - 0.05 + Math.random() / 10, longitude - 0.5 + Math.random() / 10],
         },
       };
       // eslint-disable-next-line no-await-in-loop
