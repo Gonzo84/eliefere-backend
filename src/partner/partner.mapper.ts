@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash';
 import { PartnerModel, INearestPartners, SignupRequest } from '../contract';
-import { PartnerEntity, LocationEntity, ServiceClassEntity } from '../entities';
+import { PartnerEntity, LocationEntity } from '../entities';
 
 export function toPartnerEntity(partnerModel: SignupRequest, passwordHash: string): PartnerEntity {
   if (partnerModel === null || partnerModel === undefined) {
@@ -16,8 +16,6 @@ export function toPartnerEntity(partnerModel: SignupRequest, passwordHash: strin
   const locationEntity = new LocationEntity();
   locationEntity.location = partnerModel.location;
   partnerEntity.location = locationEntity;
-  const sc = new ServiceClassEntity();
-  partnerEntity.service_class = [sc];
   return partnerEntity;
 }
 
