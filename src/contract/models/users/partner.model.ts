@@ -1,8 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { BaseModel } from './base.model';
-import { Location } from '../location.model';
+import { LocationModel } from '../location.model';
+import { ServiceClassModel } from './service-class.model';
 
-export class Partner extends BaseModel {
+export class PartnerModel extends BaseModel {
   @ApiProperty()
-  location?: Location;
+  location?: LocationModel;
+
+  @ApiProperty()
+  service_class?: ServiceClassModel[];
 }
