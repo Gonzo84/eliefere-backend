@@ -45,7 +45,6 @@ class SeedDB {
         password: hash,
         firstName: `firstName-${seedId}-${index}`,
         lastName: `lastName-${seedId}-${index}`,
-        middleName: `middleName-${seedId}-${index}`,
         role: 'client',
       };
       // eslint-disable-next-line no-await-in-loop
@@ -71,7 +70,6 @@ class SeedDB {
         password: hash,
         firstName: `firstName-${seedId}-${index}`,
         lastName: `lastName-${seedId}-${index}`,
-        middleName: `middleName-${seedId}-${index}`,
         role: 'partner',
         location: {
           type: 'Point',
