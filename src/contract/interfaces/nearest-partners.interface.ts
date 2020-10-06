@@ -16,7 +16,5 @@ export interface INearestPartners {
 
   lastName: string;
 
-  middleName: string;
-
   username: string;
 }
