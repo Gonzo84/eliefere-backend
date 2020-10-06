@@ -10,5 +10,5 @@ export class LocationEntityModel {
 
   @ApiProperty()
   @IsDefined()
-  partner: PartnerModel;
+  partner: any; // TODO fix this ts problem
 }
