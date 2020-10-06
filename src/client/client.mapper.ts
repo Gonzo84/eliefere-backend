@@ -12,7 +12,6 @@ export function toClientEntity(clientModel: IClient): Client {
   clientEntity.emailVerified = clientModel.emailVerified;
   clientEntity.firstName = clientModel.firstName;
   clientEntity.lastName = clientModel.lastName;
-  clientEntity.middleName = clientModel.middleName;
   clientEntity.image = clientModel.image;
   clientEntity.birthDate = clientModel.birthDate;
   return clientEntity;
@@ -29,7 +28,6 @@ export function toClientModel(clientEntity: Client): IClient {
   clientModel.emailVerified = clientEntity.emailVerified;
   clientModel.firstName = clientEntity.firstName;
   clientModel.lastName = clientEntity.lastName;
-  clientModel.middleName = clientEntity.middleName;
   clientModel.image = clientEntity.image;
   clientModel.birthDate = clientEntity.birthDate;
   return clientModel;
@@ -59,8 +57,6 @@ export function updateClientEntityFields(
     ? clientModel.firstName : clientEntity.firstName;
   updatedClientEntity.lastName = (clientModel.lastName !== undefined)
     ? clientModel.lastName : clientEntity.lastName;
-  updatedClientEntity.middleName = (clientModel.middleName !== undefined)
-    ? clientModel.middleName : clientEntity.middleName;
   updatedClientEntity.image = (clientModel.image !== undefined)
     ? clientModel.image : clientEntity.image;
   updatedClientEntity.birthDate = (clientModel.birthDate !== undefined)

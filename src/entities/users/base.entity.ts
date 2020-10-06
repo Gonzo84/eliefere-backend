@@ -33,11 +33,6 @@ export abstract class BaseEntity {
   lastName: string;
 
   @IsOptional()
-  @MaxLength(40)
-  @Column('text', { nullable: true })
-  middleName?: string;
-
-  @IsOptional()
   @Column('text', { nullable: true })
   image?: string;
 

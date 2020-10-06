@@ -48,7 +48,6 @@ export class ClientService {
     newClient.passwordHash = passwordHash;
     newClient.firstName = signupRequest.firstName;
     newClient.lastName = signupRequest.lastName;
-    newClient.middleName = signupRequest.middleName;
     try {
       await this.clientRepository.save(newClient);
       return newClient;

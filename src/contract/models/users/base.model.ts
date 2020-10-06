@@ -35,13 +35,6 @@ export abstract class BaseModel {
   lastName?: string;
 
   @IsOptional()
-  @IsNotEmpty()
-  @MaxLength(40)
-  @Matches(RegExp('^[A-Za-zıöüçğşİÖÜÇĞŞñÑáéíóúÁÉÍÓÚ ]+$'))
-  @ApiProperty()
-  middleName?: string;
-
-  @IsOptional()
   @ApiProperty()
   image?: string;
 
