@@ -1,9 +1,9 @@
 import { isEmpty } from 'lodash';
-import { Partner as IPartner, INearestPartners } from '../contract';
+import { PartnerModel, INearestPartners } from '../contract';
 import { Partner } from '../entities/users/partner.entity';
 import { Location } from '../entities/location/location.entity';
 
-export function toPartnerEntity(partnerModel: IPartner, passwordHash: string): Partner {
+export function toPartnerEntity(partnerModel: PartnerModel, passwordHash: string): Partner {
   if (partnerModel === null || partnerModel === undefined) {
     return null;
   }
@@ -13,11 +13,10 @@ export function toPartnerEntity(partnerModel: IPartner, passwordHash: string): P
   partnerEntity.passwordHash = passwordHash;
   partnerEntity.firstName = partnerModel.firstName;
   partnerEntity.lastName = partnerModel.lastName;
-  partnerEntity.middleName = partnerModel.middleName;
   // this nesting is a way to set the data in relational table
   const locationEntity = new Location();
   locationEntity.location = partnerModel.location;
-  partnerEntity.location = locationEntity;
+  partnerEntity.location = locationEntity.location;
   return partnerEntity;
 }
 
@@ -50,7 +49,7 @@ export function toNearestPartnerModel(data: any[]): INearestPartners[] {
  */
 export function updatePartnerEntityFields(
   partnerEntity: Partner,
-  partnerModel: IPartner,
+  partnerModel: PartnerModel,
 ): Partner {
   const updatedPartnerEntity = new Partner();
   // id cannot change
@@ -65,8 +64,6 @@ export function updatePartnerEntityFields(
     ? partnerModel.firstName : partnerEntity.firstName;
   updatedPartnerEntity.lastName = (partnerModel.lastName !== undefined)
     ? partnerModel.lastName : partnerEntity.lastName;
-  updatedPartnerEntity.middleName = (partnerModel.middleName !== undefined)
-    ? partnerModel.middleName : partnerEntity.middleName;
   updatedPartnerEntity.image = (partnerModel.image !== undefined)
     ? partnerModel.image : partnerEntity.image;
   updatedPartnerEntity.birthDate = (partnerModel.birthDate !== undefined)
@@ -76,7 +73,7 @@ export function updatePartnerEntityFields(
     location = partnerEntity.location;
   } else {
     location = new Location();
-    location.location = partnerModel.location;
+    location = partnerModel.location;
     location.partnerId = partnerModel.id;
   }
   updatedPartnerEntity.location = location;

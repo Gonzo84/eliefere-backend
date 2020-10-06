@@ -6,7 +6,9 @@ import { validate } from 'class-validator';
 import { Repository } from 'typeorm';
 
 import { Partner } from '../entities/users/partner.entity';
-import { NearestPartnersRequest, SignupRequest, INearestPartnersUntransformed } from '../contract';
+import {
+  NearestPartnersRequest, SignupRequest, INearestPartnersUntransformed, ServiceClassRequest,
+} from '../contract';
 import { toPartnerEntity } from './partner.mapper';
 import { LocationService } from '../location/location.service';
 
@@ -90,11 +92,15 @@ export class PartnerService {
     }
     // needed to update location separately because of this issue: https://github.com/typeorm/typeorm/issues/4122
     try {
-      await this.locationService.updateLocation(partnerEntity.id, location);
+      await this.locationService.updateLocation(partnerEntity.id, { location });
     } catch (err) {
       Logger.warn(JSON.stringify(err));
       throw new BadRequestException();
     }
+  }
+
+  public postServiceClass(serviceClassRequest: ServiceClassRequest) {
+
   }
 
   private static async validatePartner(partner: Partner): Promise<void> {

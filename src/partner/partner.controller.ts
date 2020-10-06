@@ -16,8 +16,8 @@ import { PartnerService } from './partner.service';
 import { Partner } from '../entities/users/partner.entity';
 import { Patnr } from './partner.decorator';
 import { toNearestPartnerModel, updatePartnerEntityFields } from './partner.mapper';
-import { UpdatePartnerRequest, NearestPartnersRequest } from '../contract';
-import { GetNearestPartnersResponse } from '../contract/response/partner/get-nearest-partners-response.model';
+import { UpdatePartnerRequest, NearestPartnersRequest, ServiceClassRequest } from '../contract';
+import { PostNearestPartnersResponse } from '../contract/response/partner/post-nearest-partners-response.model';
 
 @ApiTags('partners')
 @Controller('partners')
@@ -45,8 +45,20 @@ export class PartnerController {
   @HttpCode(HttpStatus.OK)
   async nearestPartners(
     @Body() nearestPartnersRequest: NearestPartnersRequest,
-  ): Promise<GetNearestPartnersResponse> {
+  ): Promise<PostNearestPartnersResponse> {
     // eslint-disable-next-line max-len
-    return new GetNearestPartnersResponse(toNearestPartnerModel(await this.partnerService.getNearestPartners(nearestPartnersRequest)));
+    return new PostNearestPartnersResponse(toNearestPartnerModel(await this.partnerService.getNearestPartners(nearestPartnersRequest)));
+  }
+
+  @ApiBearerAuth()
+  @Post('service-class')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard())
+  async serviceClass(
+    @Body() serviceClassRequest: ServiceClassRequest,
+  ): Promise<void> {
+    // eslint-disable-next-line max-len
+    this.partnerService.postServiceClass(serviceClassRequest);
+    // return new PostServiceClassResponse(toServiceClassModel(await this.partnerService.postServiceClass(serviceClassRequest)));
   }
 }

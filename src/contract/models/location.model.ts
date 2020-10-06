@@ -2,7 +2,7 @@ import {
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class Location {
+export class LocationModel {
   @ApiProperty()
   type: string;
 

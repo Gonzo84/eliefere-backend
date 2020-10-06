@@ -3,7 +3,7 @@ import {
 } from 'typeorm';
 // eslint-disable-next-line import/no-cycle
 import { Partner } from '../users/partner.entity';
-import { Location as LocationModel } from '../../contract';
+import { LocationModel } from '../../contract';
 
 @Entity('locations')
 @Unique('unique_partner_location_id', ['partnerId'])
