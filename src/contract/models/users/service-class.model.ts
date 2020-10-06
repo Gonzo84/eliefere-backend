@@ -4,7 +4,7 @@ import { VehicleDetailsModel } from './vehicle-details.model';
 
 export class ServiceClassModel {
   @ApiProperty()
-  partnerId: number;
+  id: number;
 
   @ApiProperty()
   type_of_service: string;

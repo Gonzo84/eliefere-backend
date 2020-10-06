@@ -1,5 +1,5 @@
 import { Client as IClient } from '../contract';
-import { Client } from '../entities/users/client.entity';
+import { Client } from '../entities';
 
 export function toClientEntity(clientModel: IClient): Client {
   if (clientModel === null || clientModel === undefined) {

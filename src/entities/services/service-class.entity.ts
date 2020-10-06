@@ -1,17 +1,17 @@
 import {
-  Column, Entity, Index, ManyToOne, OneToOne, PrimaryColumn, Unique,
+  Column, Entity, Index, ManyToOne, OneToOne, Unique, JoinColumn, PrimaryGeneratedColumn
 } from 'typeorm';
 // eslint-disable-next-line import/no-cycle
-import { Partner } from '../users/partner.entity';
+import { Partner } from '..';
 // eslint-disable-next-line import/no-cycle
 import { VehicleDetailsEntity } from './vehicle-details.entity';
 
 @Entity('service-class')
-@Unique('unique_partner_service_class_id', ['partnerId'])
-@Index('index_partner_service_class_id', ['partnerId'])
+// @Unique('unique_partner_service_class_id', ['partner_id'])
+// @Index('index_partner_service_class_id', ['partner_id'])
 export class ServiceClassEntity {
-  @PrimaryColumn()
-  partnerId: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
   type_of_service: string;
@@ -25,5 +25,6 @@ export class ServiceClassEntity {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ManyToOne((type) => Partner, (partner) => partner.service_class)
+  @JoinColumn({ name: 'partner_id' })
   partner: Partner;
 }

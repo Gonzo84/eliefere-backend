@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { validate } from 'class-validator';
 import { Repository } from 'typeorm';
 
-import { Partner } from '../entities/users/partner.entity';
+import { Partner, ServiceClassEntity, VehicleDetailsEntity } from '../entities';
 import {
   NearestPartnersRequest, SignupRequest, INearestPartnersUntransformed, ServiceClassRequest,
 } from '../contract';
@@ -92,15 +92,34 @@ export class PartnerService {
     }
     // needed to update location separately because of this issue: https://github.com/typeorm/typeorm/issues/4122
     try {
-      await this.locationService.updateLocation(partnerEntity.id, { location });
+      await this.locationService.updateLocation(partnerEntity.id, location);
     } catch (err) {
       Logger.warn(JSON.stringify(err));
       throw new BadRequestException();
     }
   }
 
-  public postServiceClass(serviceClassRequest: ServiceClassRequest) {
-
+  public async postServiceClass(serviceClassRequest: ServiceClassRequest) {
+    // const partnerEntity = await this.partnerRepository.findOne(serviceClassRequest.partnerId);
+    // if (partnerEntity === null || partnerEntity === undefined) {
+    //   Logger.warn(
+    //     `Password change of non-existent account with id ${serviceClassRequest.partnerId} is rejected.`,
+    //   );
+    //   throw new NotFoundException();
+    // }
+    // const serviceClass = new ServiceClassEntity();
+    // serviceClass.partnerId = serviceClassRequest.partnerId;
+    // serviceClass.type_of_service = serviceClassRequest.type_of_service;
+    // // const vehicleDetails = new VehicleDetailsEntity();
+    // // vehicleDetails.verified = serviceClassRequest.details.verified;
+    // // serviceClass.details = vehicleDetails;
+    // partnerEntity.service_class = [...partnerEntity.service_class, serviceClass];
+    // try {
+    //   await this.partnerRepository.update(partnerEntity.id, { ...partnerEntity });
+    // } catch (err) {
+    //   Logger.warn(JSON.stringify(err));
+    //   throw new BadRequestException();
+    // }
   }
 
   private static async validatePartner(partner: Partner): Promise<void> {

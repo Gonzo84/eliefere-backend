@@ -3,13 +3,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 
 import { LocationService } from './location.service';
-import { Location } from '../entities/location/location.entity';
+import { Location } from '../entities';
 import { LocationController } from './location.controller';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Location]),
-    PassportModule.register({ defaultStrategy: 'jwt' })
+    PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
   providers: [LocationService],
   exports: [LocationService],

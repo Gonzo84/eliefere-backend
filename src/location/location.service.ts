@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { validate } from 'class-validator';
 import { Repository } from 'typeorm';
 import { NearestPartnersRequest, UpdateLocationRequest, INearestPartnersUntransformed } from '../contract';
-import { Location } from '../entities/location/location.entity';
+import { Location } from '../entities';
 
 @Injectable()
 export class LocationService {
@@ -16,9 +16,9 @@ export class LocationService {
   }
 
   // eslint-disable-next-line max-len
-  public async getNearestPartners(nearest: NearestPartnersRequest): Promise<INearestPartnersUntransformed[]> {
+  public async getNearestPartners(nearest: NearestPartnersRequest): Promise<any[]> {
     try {
-      return await this.locationRepository.createQueryBuilder('locations')
+      return this.locationRepository.createQueryBuilder('locations')
         .innerJoinAndSelect('locations.partner', 'partner')
         .where('ST_DWithin(location, ST_MakePoint(:lat,:long)::geography, :dist)', {
           lat: nearest.location[0],

@@ -4,7 +4,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { validate } from 'class-validator';
 import { Repository } from 'typeorm';
-import { Client } from '../entities/users/client.entity';
+import { Client } from '../entities';
 import { SignupRequest } from '../contract';
 
 @Injectable()

@@ -7,5 +7,5 @@ export class LocationModel {
   type: string;
 
   @ApiProperty()
-  coordinates: number[];
+  coordinates: Array<number>;
 }

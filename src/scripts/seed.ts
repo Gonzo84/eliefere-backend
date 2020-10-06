@@ -1,12 +1,10 @@
 import { createConnection, ConnectionOptions, getConnection } from 'typeorm';
 import * as argon2 from 'argon2';
 import { configService } from '../config/config.service';
-import { Client } from '../entities/users/client.entity';
+import { Client, Partner, Location } from '../entities';
 import { ClientService } from '../client/client.service';
-import { Partner } from '../entities/users/partner.entity';
 import { PartnerService } from '../partner/partner.service';
 import { LocationService } from '../location/location.service';
-import { Location } from '../entities/location/location.entity';
 
 class SeedDB {
   public async run(lat: string, long: string) {

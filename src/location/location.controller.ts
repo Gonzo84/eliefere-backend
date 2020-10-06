@@ -1,5 +1,5 @@
 import {
-  Body, Controller, HttpCode, HttpStatus, Param, ParseIntPipe, Post, Put, UseGuards,
+  Body, Controller, HttpCode, HttpStatus, Param, ParseIntPipe, Put, UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';

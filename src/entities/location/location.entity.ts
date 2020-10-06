@@ -2,7 +2,7 @@ import {
   Column, Entity, Index, JoinColumn, OneToOne, PrimaryColumn, Unique,
 } from 'typeorm';
 // eslint-disable-next-line import/no-cycle
-import { Partner } from '../users/partner.entity';
+import { Partner } from '..';
 import { LocationModel } from '../../contract';
 
 @Entity('locations')

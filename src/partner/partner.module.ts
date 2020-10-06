@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 
 import { PartnerService } from './partner.service';
-import { Partner } from '../entities/users/partner.entity';
+import { Partner } from '../entities';
 import { PartnerController } from './partner.controller';
 import { LocationModule } from '../location/location.module';
 

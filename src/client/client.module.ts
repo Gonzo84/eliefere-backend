@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { ClientService } from './client.service';
-import { Client } from '../entities/users/client.entity';
+import { Client } from '../entities';
 import { ClientController } from './client.controller';
 
 @Module({

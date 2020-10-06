@@ -1,7 +1,6 @@
 import { isEmpty } from 'lodash';
 import { PartnerModel, INearestPartners } from '../contract';
-import { Partner } from '../entities/users/partner.entity';
-import { Location } from '../entities/location/location.entity';
+import { Partner, Location, ServiceClassEntity } from '../entities';
 
 export function toPartnerEntity(partnerModel: PartnerModel, passwordHash: string): Partner {
   if (partnerModel === null || partnerModel === undefined) {
@@ -16,7 +15,9 @@ export function toPartnerEntity(partnerModel: PartnerModel, passwordHash: string
   // this nesting is a way to set the data in relational table
   const locationEntity = new Location();
   locationEntity.location = partnerModel.location;
-  partnerEntity.location = locationEntity.location;
+  partnerEntity.location = locationEntity;
+  const sc = new ServiceClassEntity();
+  partnerEntity.service_class = [sc];
   return partnerEntity;
 }
 
