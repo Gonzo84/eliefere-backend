@@ -2,7 +2,7 @@ import {
   IsEmail, IsNotEmpty, IsOptional, Matches, MaxLength, MinLength,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Location } from '../..';
+import { LocationModel } from '../..';
 
 export class SignupRequest {
   @ApiProperty({
@@ -55,16 +55,10 @@ export class SignupRequest {
     minimum: 20,
     pattern: '^[A-Za-zıöüçğşİÖÜÇĞŞñÑáéíóúÁÉÍÓÚ ]+$',
   })
-  @IsOptional()
-  @IsNotEmpty()
-  @Matches(RegExp('^[A-Za-zıöüçğşİÖÜÇĞŞñÑáéíóúÁÉÍÓÚ ]+$'))
-  @MaxLength(20)
-  middleName?: string;
 
   @ApiProperty()
-  @IsNotEmpty()
   @IsOptional()
-  location?: Location;
+  location?: LocationModel;
 
   @ApiProperty({
     description: 'should be client or partner',
