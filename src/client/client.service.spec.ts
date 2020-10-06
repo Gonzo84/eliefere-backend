@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Repository } from 'typeorm';
 import { ClientService } from './client.service';
-import { Client } from '../entities';
+import { ClientEntity } from '../entities';
 
 describe('ClientService', () => {
   let service: ClientService;
-  let spyRepository: Repository<Client>;
+  let spyRepository: Repository<ClientEntity>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -18,7 +18,7 @@ describe('ClientService', () => {
     }).compile();
 
     service = module.get<ClientService>(ClientService);
-    spyRepository = module.get<Repository<Client>>('ClientRepository');
+    spyRepository = module.get<Repository<ClientEntity>>('ClientRepository');
   });
 
   describe('getClientEntityById', () => {
@@ -33,7 +33,7 @@ describe('ClientService', () => {
     });
 
     it('should return the result from repository', async () => {
-      const clientEntity = new Client();
+      const clientEntity = new ClientEntity();
       const userId = 123123;
       const mockFindOne = jest.fn();
       mockFindOne.mockReturnValue(clientEntity);
@@ -59,7 +59,7 @@ describe('ClientService', () => {
     });
 
     it('should return the result from repository', async () => {
-      const clientEntity = new Client();
+      const clientEntity = new ClientEntity();
       const username = 'userName';
       const mockFindOne = jest.fn();
       mockFindOne.mockReturnValue(clientEntity);

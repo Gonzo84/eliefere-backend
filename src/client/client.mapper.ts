@@ -1,11 +1,11 @@
-import { Client as IClient } from '../contract';
-import { Client } from '../entities';
+import { ClientModel } from '../contract';
+import { ClientEntity } from '../entities';
 
-export function toClientEntity(clientModel: IClient): Client {
+export function toClientEntity(clientModel: ClientModel): ClientEntity {
   if (clientModel === null || clientModel === undefined) {
     return null;
   }
-  const clientEntity = new Client();
+  const clientEntity = new ClientEntity();
   clientEntity.id = clientModel.id;
   clientEntity.username = clientModel.username;
   clientEntity.email = clientModel.email;
@@ -17,11 +17,11 @@ export function toClientEntity(clientModel: IClient): Client {
   return clientEntity;
 }
 
-export function toClientModel(clientEntity: Client): IClient {
+export function toClientModel(clientEntity: ClientEntity): ClientModel {
   if (clientEntity === null || clientEntity === undefined) {
     return null;
   }
-  const clientModel = new Client();
+  const clientModel = new ClientEntity();
   clientModel.id = clientEntity.id;
   clientModel.username = clientEntity.username;
   clientModel.email = clientEntity.email;
@@ -41,10 +41,10 @@ export function toClientModel(clientEntity: Client): IClient {
  * @param clientModel Model that contains new values
  */
 export function updateClientEntityFields(
-  clientEntity: Client,
-  clientModel: IClient,
-): Client {
-  const updatedClientEntity = new Client();
+  clientEntity: ClientEntity,
+  clientModel: ClientModel,
+): ClientEntity {
+  const updatedClientEntity = new ClientEntity();
   // id cannot change
   updatedClientEntity.id = clientEntity.id;
   updatedClientEntity.username = (clientModel.username !== undefined)

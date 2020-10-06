@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Repository } from 'typeorm';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
-import { EmailVerification, EmailChange, PasswordReset } from '../entities';
+import { EmailVerificationEntity, EmailChangeEntity, PasswordResetEntity } from '../entities';
 import { MailSenderService } from '../mail-sender/mail-sender.service';
 import { ClientService } from '../client/client.service';
 import { configService } from '../config/config.service';
@@ -16,9 +16,9 @@ describe('AuthService', () => {
   let spyClientService: ClientService;
   let spyJwtService: JwtService;
   // mock repositories
-  let spyEmailVerificationRepository: Repository<EmailVerification>;
-  let spyEmailChangeRepository: Repository<EmailChange>;
-  let spyPasswordResetRepository: Repository<PasswordReset>;
+  let spyEmailVerificationRepository: Repository<EmailVerificationEntity>;
+  let spyEmailChangeRepository: Repository<EmailChangeEntity>;
+  let spyPasswordResetRepository: Repository<PasswordResetEntity>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -56,9 +56,9 @@ describe('AuthService', () => {
     spyMailSenderService = module.get<MailSenderService>(MailSenderService);
     spyClientService = module.get<ClientService>(ClientService);
     spyJwtService = module.get<JwtService>(JwtService);
-    spyEmailVerificationRepository = module.get<Repository<EmailVerification>>('EmailVerificationRepository');
-    spyEmailChangeRepository = module.get<Repository<EmailChange>>('EmailChangeRepository');
-    spyPasswordResetRepository = module.get<Repository<PasswordReset>>('PasswordResetRepository');
+    spyEmailVerificationRepository = module.get<Repository<EmailVerificationEntity>>('EmailVerificationRepository');
+    spyEmailChangeRepository = module.get<Repository<EmailChangeEntity>>('EmailChangeRepository');
+    spyPasswordResetRepository = module.get<Repository<PasswordResetEntity>>('PasswordResetRepository');
   });
 
   it('should be defined', () => {

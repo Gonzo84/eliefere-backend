@@ -26,19 +26,19 @@ import { ClientService } from '../client/client.service';
 import { PartnerService } from '../partner/partner.service';
 import { JwtPayload } from '../contract/interfaces/jwt-payload.interface';
 import {
-  Client, EmailVerification, EmailChange, PasswordReset,
+  ClientEntity, EmailVerificationEntity, EmailChangeEntity, PasswordResetEntity,
 } from '../entities';
 import { MailSenderService } from '../mail-sender/mail-sender.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(EmailVerification)
-    private readonly emailVerificationRepository: Repository<EmailVerification>,
-    @InjectRepository(EmailChange)
-    private readonly emailChangeRepository: Repository<EmailChange>,
-    @InjectRepository(PasswordReset)
-    private readonly passwordResetRepository: Repository<PasswordReset>,
+    @InjectRepository(EmailVerificationEntity)
+    private readonly emailVerificationRepository: Repository<EmailVerificationEntity>,
+    @InjectRepository(EmailChangeEntity)
+    private readonly emailChangeRepository: Repository<EmailChangeEntity>,
+    @InjectRepository(PasswordResetEntity)
+    private readonly passwordResetRepository: Repository<PasswordResetEntity>,
     private readonly clientService: ClientService,
     private readonly partnerService: PartnerService,
     private readonly jwtService: JwtService,
@@ -56,7 +56,7 @@ export class AuthService {
     );
     const token = nanoid();
 
-    const emailVerification = new EmailVerification();
+    const emailVerification = new EmailVerificationEntity();
     emailVerification.token = token;
     emailVerification.userId = createdUser.id;
     // valid for 2 days
@@ -160,7 +160,7 @@ export class AuthService {
     }
 
     const token = nanoid();
-    const emailChange = new EmailChange();
+    const emailChange = new EmailChangeEntity();
     emailChange.token = token;
     emailChange.userId = userId;
     // valid for 2 days
@@ -210,7 +210,7 @@ export class AuthService {
       );
     }
     const token = nanoid();
-    const passwordReset = new PasswordReset();
+    const passwordReset = new PasswordResetEntity();
     passwordReset.token = token;
     passwordReset.userId = userId;
     // valid for 2 days
@@ -268,7 +268,7 @@ export class AuthService {
     await MailSenderService.sendPasswordChangeInfoMail(name, email);
   }
 
-  async validateClient(payload: JwtPayload): Promise<Client> {
+  async validateClient(payload: JwtPayload): Promise<ClientEntity> {
     const clientEntity = await this.clientService.getClientEntityById(payload.id);
     if (
       clientEntity !== undefined

@@ -1,19 +1,19 @@
 import { isEmpty } from 'lodash';
-import { PartnerModel, INearestPartners } from '../contract';
-import { Partner, Location, ServiceClassEntity } from '../entities';
+import { PartnerModel, INearestPartners, SignupRequest } from '../contract';
+import { PartnerEntity, LocationEntity, ServiceClassEntity } from '../entities';
 
-export function toPartnerEntity(partnerModel: PartnerModel, passwordHash: string): Partner {
+export function toPartnerEntity(partnerModel: SignupRequest, passwordHash: string): PartnerEntity {
   if (partnerModel === null || partnerModel === undefined) {
     return null;
   }
-  const partnerEntity = new Partner();
+  const partnerEntity = new PartnerEntity();
   partnerEntity.username = partnerModel.username.toLowerCase();
   partnerEntity.email = partnerModel.email.toLowerCase();
   partnerEntity.passwordHash = passwordHash;
   partnerEntity.firstName = partnerModel.firstName;
   partnerEntity.lastName = partnerModel.lastName;
   // this nesting is a way to set the data in relational table
-  const locationEntity = new Location();
+  const locationEntity = new LocationEntity();
   locationEntity.location = partnerModel.location;
   partnerEntity.location = locationEntity;
   const sc = new ServiceClassEntity();
@@ -49,10 +49,10 @@ export function toNearestPartnerModel(data: any[]): INearestPartners[] {
  * @param partnerModel Model that contains new values
  */
 export function updatePartnerEntityFields(
-  partnerEntity: Partner,
+  partnerEntity: PartnerEntity,
   partnerModel: PartnerModel,
-): Partner {
-  const updatedPartnerEntity = new Partner();
+): PartnerEntity {
+  const updatedPartnerEntity = new PartnerEntity();
   // id cannot change
   updatedPartnerEntity.id = partnerEntity.id;
   updatedPartnerEntity.username = (partnerModel.username !== undefined)
@@ -73,7 +73,7 @@ export function updatePartnerEntityFields(
   if (isEmpty(partnerModel.location)) {
     location = partnerEntity.location;
   } else {
-    location = new Location();
+    location = new LocationEntity();
     location = partnerModel.location;
     location.partnerId = partnerModel.id;
   }

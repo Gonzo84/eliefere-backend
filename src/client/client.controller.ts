@@ -13,7 +13,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { ClientService } from './client.service';
 import { UpdateClientRequest } from '../contract';
-import { Client } from '../entities';
+import { ClientEntity } from '../entities';
 import { Clt } from './client.decorator';
 import { updateClientEntityFields } from './client.mapper';
 
@@ -30,7 +30,7 @@ export class ClientController {
   async updateClient(
     @Param('id', ParseIntPipe) id: number,
       @Body() updateRequest: UpdateClientRequest,
-      @Clt() client: Client,
+      @Clt() client: ClientEntity,
   ): Promise<void> {
     if (id !== client.id || id !== updateRequest.client.id) {
       throw new UnauthorizedException();

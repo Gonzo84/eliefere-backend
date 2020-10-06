@@ -1,7 +1,7 @@
 import { createConnection, ConnectionOptions, getConnection } from 'typeorm';
 import * as argon2 from 'argon2';
 import { configService } from '../config/config.service';
-import { Client, Partner, Location } from '../entities';
+import { ClientEntity, PartnerEntity, LocationEntity } from '../entities';
 import { ClientService } from '../client/client.service';
 import { PartnerService } from '../partner/partner.service';
 import { LocationService } from '../location/location.service';
@@ -32,7 +32,7 @@ class SeedDB {
   }
 
   private static async seedClients(connection, seedId, hash) {
-    const clientService = new ClientService(connection.getRepository(Client));
+    const clientService = new ClientService(connection.getRepository(ClientEntity));
     let index = 0;
     while (index < 10) {
       // eslint-disable-next-line no-plusplus
@@ -57,7 +57,7 @@ class SeedDB {
     const latitude = lat ? parseFloat(lat) : 49.502074;
     const longitude = long ? parseFloat(long) : 8.485755;
     // eslint-disable-next-line max-len
-    const partnerService = new PartnerService(connection.getRepository(Partner), new LocationService(connection.getRepository(Location)));
+    const partnerService = new PartnerService(connection.getRepository(PartnerEntity), new LocationService(connection.getRepository(LocationEntity)));
     let index = 0;
     while (index < 10) {
       // eslint-disable-next-line no-plusplus

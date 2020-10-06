@@ -1,7 +1,7 @@
 import { IsDefined, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { Client } from '../../..';
+import { ClientModel } from '../../..';
 
 export class UpdateClientRequest {
   @ApiProperty({
@@ -9,6 +9,6 @@ export class UpdateClientRequest {
   })
   @IsDefined()
   @ValidateNested()
-  @Type(() => Client)
-  client: Client;
+  @Type(() => ClientModel)
+  client: ClientModel;
 }

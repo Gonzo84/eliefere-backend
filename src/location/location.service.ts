@@ -5,13 +5,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { validate } from 'class-validator';
 import { Repository } from 'typeorm';
 import { NearestPartnersRequest, UpdateLocationRequest, INearestPartnersUntransformed } from '../contract';
-import { Location } from '../entities';
+import { LocationEntity } from '../entities';
 
 @Injectable()
 export class LocationService {
   constructor(
-    @InjectRepository(Location)
-    private readonly locationRepository: Repository<Location>,
+    @InjectRepository(LocationEntity)
+    private readonly locationRepository: Repository<LocationEntity>,
   ) {
   }
 
@@ -37,7 +37,7 @@ export class LocationService {
     id: number,
     updateLocationRequest: UpdateLocationRequest,
   ): Promise<void> {
-    const newLocation = new Location();
+    const newLocation = new LocationEntity();
     newLocation.location = updateLocationRequest.location;
     await LocationService.validateLocation(newLocation);
     try {
@@ -48,7 +48,7 @@ export class LocationService {
     }
   }
 
-  private static async validateLocation(location: Location): Promise<void> {
+  private static async validateLocation(location: LocationEntity): Promise<void> {
     const errors = await validate(location, {
       validationError: { target: false },
     });

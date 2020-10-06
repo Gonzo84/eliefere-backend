@@ -5,21 +5,22 @@ import {
   Unique,
 } from 'typeorm';
 import { BaseEntity } from './base.entity';
-import { Location, ServiceClassEntity } from '..';
+import { LocationEntity, ServiceClassEntity } from '..';
+import { PartnerModel } from '../../contract';
 
 @Entity('partners')
 @Unique('unique_partner_username', ['username'])
 @Unique('unique_partner_email', ['email'])
 @Index('index_partner_username', ['username'])
 @Index('index_partner_email', ['email'])
-export class Partner extends BaseEntity {
+export class PartnerEntity extends BaseEntity implements PartnerModel {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @OneToOne((type) => Location, (location) => location.partner,
+  @OneToOne((type) => LocationEntity, (location) => location.partner,
     {
       cascade: ['insert', 'update', 'remove'],
     })
   // eslint-disable-next-line max-len
-  location?: Location; // TODO fix this typescript problem, there should be Location entity, not any
+  location?: LocationEntity;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @OneToMany((type) => ServiceClassEntity, (sc) => sc.partner, {

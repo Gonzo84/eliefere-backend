@@ -5,7 +5,7 @@ import {
 @Entity('email-verification')
 @Unique('unique_email-verification_userId', ['userId'])
 @Index('index_email-verification_userId', ['userId'])
-export class EmailVerification {
+export class EmailVerificationEntity {
   @PrimaryColumn('character', { length: 21 })
   token: string;
 

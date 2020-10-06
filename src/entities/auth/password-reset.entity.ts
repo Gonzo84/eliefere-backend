@@ -5,7 +5,7 @@ import {
 @Entity('password-reset')
 @Unique('unique_password-reset_userId', ['userId'])
 @Index('index_password-reset_userId', ['userId'])
-export class PasswordReset {
+export class PasswordResetEntity {
   @PrimaryColumn('character', { length: 21 })
   token: string;
 

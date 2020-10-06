@@ -5,7 +5,7 @@ import {
 @Entity('email-change')
 @Unique('unique_email-change_userId', ['userId'])
 @Index('index_email-change_userId', ['userId'])
-export class EmailChange {
+export class EmailChangeEntity {
   @PrimaryColumn('character', { length: 21 })
   token: string;
 

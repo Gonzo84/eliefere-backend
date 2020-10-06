@@ -1,4 +1,4 @@
 import { BaseModel } from './base.model';
 
-export class Client extends BaseModel {
+export class ClientModel extends BaseModel {
 }

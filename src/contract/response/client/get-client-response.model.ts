@@ -1,9 +1,9 @@
-import { Client } from '../../index';
+import { ClientModel } from '../..';
 
 export class GetClientResponse {
-  client: Client;
+  client: ClientModel;
 
-  constructor(client: Client) {
+  constructor(client: ClientModel) {
     this.client = client;
   }
 }

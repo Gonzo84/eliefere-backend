@@ -13,7 +13,7 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { PartnerService } from './partner.service';
-import { Partner } from '../entities';
+import { PartnerEntity } from '../entities';
 import { Patnr } from './partner.decorator';
 import { toNearestPartnerModel, updatePartnerEntityFields } from './partner.mapper';
 import { UpdatePartnerRequest, NearestPartnersRequest, ServiceClassRequest } from '../contract';
@@ -25,14 +25,14 @@ export class PartnerController {
   constructor(private readonly partnerService: PartnerService) {
   }
 
-  // @ApiBearerAuth()
+  @ApiBearerAuth()
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  // @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard())
   async updatePartner(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateRequest: UpdatePartnerRequest,
-    @Patnr() partner: Partner,
+    @Patnr() partner: PartnerEntity,
   ): Promise<void> {
     if (id !== partner.id || id !== updateRequest.partner.id) {
       throw new UnauthorizedException();
@@ -57,7 +57,6 @@ export class PartnerController {
   async serviceClass(
     @Body() serviceClassRequest: ServiceClassRequest,
   ): Promise<void> {
-    console.log('serviceClassRequest ', serviceClassRequest);
     // eslint-disable-next-line max-len
     this.partnerService.postServiceClass(serviceClassRequest);
     // return new PostServiceClassResponse(toServiceClassModel(await this.partnerService.postServiceClass(serviceClassRequest)));

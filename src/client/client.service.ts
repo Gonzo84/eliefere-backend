@@ -4,34 +4,34 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { validate } from 'class-validator';
 import { Repository } from 'typeorm';
-import { Client } from '../entities';
+import { ClientEntity } from '../entities';
 import { SignupRequest } from '../contract';
 
 @Injectable()
 export class ClientService {
   constructor(
-    @InjectRepository(Client)
-    private readonly clientRepository: Repository<Client>,
+    @InjectRepository(ClientEntity)
+    private readonly clientRepository: Repository<ClientEntity>,
   ) {
   }
 
-  public async getClientEntityById(id: number): Promise<Client> {
+  public async getClientEntityById(id: number): Promise<ClientEntity> {
     return this.clientRepository.findOne(id);
   }
 
-  public async getClientEntityByUsername(username: string): Promise<Client> {
+  public async getClientEntityByUsername(username: string): Promise<ClientEntity> {
     const normalizedUsername = username.toLowerCase();
     return this.clientRepository.findOne({ where: { username: normalizedUsername } });
   }
 
-  public async getClientEntityByEmail(email: string): Promise<Client> {
+  public async getClientEntityByEmail(email: string): Promise<ClientEntity> {
     const normalizedEmail = email.toLowerCase();
     return this.clientRepository.findOne({ where: { email: normalizedEmail } });
   }
 
   public async getClientEntityByUsernameOrEmail(
     identifier: string,
-  ): Promise<Client> {
+  ): Promise<ClientEntity> {
     const normalizedIdentifier = identifier.toLowerCase();
     return this.clientRepository.findOne({
       where: [{ username: normalizedIdentifier }, { email: normalizedIdentifier }],
@@ -41,8 +41,8 @@ export class ClientService {
   public async createClient(
     signupRequest: SignupRequest,
     passwordHash: string,
-  ): Promise<Client> {
-    const newClient = new Client();
+  ): Promise<ClientEntity> {
+    const newClient = new ClientEntity();
     newClient.username = signupRequest.username.toLowerCase();
     newClient.email = signupRequest.email.toLowerCase();
     newClient.passwordHash = passwordHash;
@@ -73,7 +73,7 @@ export class ClientService {
     await this.clientRepository.update(clientEntity.id, clientEntity);
   }
 
-  public async updateClient(clientEntity: Client): Promise<void> {
+  public async updateClient(clientEntity: ClientEntity): Promise<void> {
     // TODO: Email update should be separated
     await ClientService.validateClient(clientEntity);
     try {
@@ -84,7 +84,7 @@ export class ClientService {
     }
   }
 
-  private static async validateClient(client: Client): Promise<void> {
+  private static async validateClient(client: ClientEntity): Promise<void> {
     const errors = await validate(client, {
       validationError: { target: false },
     });

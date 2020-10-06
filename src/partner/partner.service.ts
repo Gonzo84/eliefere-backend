@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { validate } from 'class-validator';
 import { Repository } from 'typeorm';
 
-import { Partner, ServiceClassEntity, VehicleDetailsEntity } from '../entities';
+import { PartnerEntity, ServiceClassEntity, VehicleDetailsEntity } from '../entities';
 import {
   NearestPartnersRequest, SignupRequest, INearestPartnersUntransformed, ServiceClassRequest,
 } from '../contract';
@@ -15,8 +15,8 @@ import { LocationService } from '../location/location.service';
 @Injectable()
 export class PartnerService {
   constructor(
-    @InjectRepository(Partner)
-    private readonly partnerRepository: Repository<Partner>,
+    @InjectRepository(PartnerEntity)
+    private readonly partnerRepository: Repository<PartnerEntity>,
     private readonly locationService: LocationService,
   ) {
   }
@@ -26,23 +26,23 @@ export class PartnerService {
     return this.locationService.getNearestPartners(nearest);
   }
 
-  public async getPartnerEntityById(id: number): Promise<Partner> {
+  public async getPartnerEntityById(id: number): Promise<PartnerEntity> {
     return this.partnerRepository.findOne(id);
   }
 
-  public async getPartnerEntityByUsername(username: string): Promise<Partner> {
+  public async getPartnerEntityByUsername(username: string): Promise<PartnerEntity> {
     const normalizedUsername = username.toLowerCase();
     return this.partnerRepository.findOne({ where: { username: normalizedUsername } });
   }
 
-  public async getPartnerEntityByEmail(email: string): Promise<Partner> {
+  public async getPartnerEntityByEmail(email: string): Promise<PartnerEntity> {
     const normalizedEmail = email.toLowerCase();
     return this.partnerRepository.findOne({ where: { email: normalizedEmail } });
   }
 
   public async getPartnerEntityByUsernameOrEmail(
     identifier: string,
-  ): Promise<Partner> {
+  ): Promise<PartnerEntity> {
     const normalizedIdentifier = identifier.toLowerCase();
     return this.partnerRepository.findOne({
       where: [{ username: normalizedIdentifier }, { email: normalizedIdentifier }],
@@ -52,7 +52,7 @@ export class PartnerService {
   public async createPartner(
     signupRequest: SignupRequest,
     passwordHash: string,
-  ): Promise<Partner> {
+  ): Promise<PartnerEntity> {
     const newPartner = toPartnerEntity(signupRequest, passwordHash);
     try {
       await this.partnerRepository.save(newPartner);
@@ -79,7 +79,7 @@ export class PartnerService {
     await this.partnerRepository.update(partnerEntity.id, partnerEntity);
   }
 
-  public async updatePartner(partnerEntity: Partner): Promise<void> {
+  public async updatePartner(partnerEntity: PartnerEntity): Promise<void> {
     await PartnerService.validatePartner(partnerEntity);
     const { location } = { ...partnerEntity };
     // eslint-disable-next-line no-param-reassign
@@ -122,7 +122,7 @@ export class PartnerService {
     // }
   }
 
-  private static async validatePartner(partner: Partner): Promise<void> {
+  private static async validatePartner(partner: PartnerEntity): Promise<void> {
     const errors = await validate(partner, {
       validationError: { target: false },
     });

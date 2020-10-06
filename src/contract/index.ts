@@ -6,9 +6,10 @@ export { INearestPartnersUntransformed } from './interfaces/nearest-partners-unt
 
 // models
 
-export { Client } from './models/users/client.model';
+export { ClientModel } from './models/users/client.model';
 export { LocationModel } from './models/location.model';
 export { PartnerModel } from './models/users/partner.model';
+export { LocationEntityModel } from './models/location-entity.model';
 
 // requests
 

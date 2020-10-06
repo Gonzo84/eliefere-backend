@@ -6,7 +6,7 @@ import { AuthService } from './auth.service';
 import { ClientModule } from '../client/client.module';
 import { AuthController } from './auth.controller';
 import {
-  Client, EmailVerification, EmailChange, PasswordReset,
+  ClientEntity, EmailVerificationEntity, EmailChangeEntity, PasswordResetEntity,
 } from '../entities';
 import { JwtStrategy } from './jwt.strategy';
 import { MailSenderModule } from '../mail-sender/mail-sender.module';
@@ -16,10 +16,10 @@ import { PartnerModule } from '../partner/partner.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([
-      Client,
-      EmailVerification,
-      EmailChange,
-      PasswordReset,
+      ClientEntity,
+      EmailVerificationEntity,
+      EmailChangeEntity,
+      PasswordResetEntity,
     ]),
     ClientModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),

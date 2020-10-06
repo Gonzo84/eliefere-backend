@@ -1,7 +1,7 @@
 import {
   Entity, Index, Unique,
 } from 'typeorm';
-import { Client as IClient } from '../../contract';
+import { ClientModel } from '../../contract';
 import { BaseEntity } from './base.entity';
 
 @Entity('clients')
@@ -9,5 +9,5 @@ import { BaseEntity } from './base.entity';
 @Unique('unique_client_email', ['email'])
 @Index('index_client_username', ['username'])
 @Index('index_client_email', ['email'])
-export class Client extends BaseEntity implements IClient {
+export class ClientEntity extends BaseEntity implements ClientModel {
 }

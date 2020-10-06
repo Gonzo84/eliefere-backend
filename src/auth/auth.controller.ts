@@ -18,7 +18,7 @@ import {
 } from '../contract';
 import { AuthService } from './auth.service';
 import { Clt } from '../client/client.decorator';
-import { Client } from '../entities';
+import { ClientEntity } from '../entities';
 import { toClientModel } from '../client/client.mapper';
 
 @ApiTags('auth')
@@ -59,7 +59,7 @@ export class AuthController {
   @Get()
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard())
-  async getClientWithToken(@Clt() client: Client): Promise<GetClientResponse> {
+  async getClientWithToken(@Clt() client: ClientEntity): Promise<GetClientResponse> {
     return new GetClientResponse(toClientModel(client));
   }
 
@@ -74,7 +74,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard())
   async sendChangeEmailMail(
-    @Clt() client: Client,
+    @Clt() client: ClientEntity,
       @Body() changeEmailRequest: ChangeEmailRequest,
   ): Promise<void> {
     await this.authService.sendChangeEmailMail(
@@ -102,7 +102,7 @@ export class AuthController {
   @UseGuards(AuthGuard())
   async changePassword(
     @Body() changePasswordRequest: ChangePasswordRequest,
-      @Clt() client: Client,
+      @Clt() client: ClientEntity,
   ): Promise<void> {
     await this.authService.changePassword(
       changePasswordRequest,
@@ -123,7 +123,7 @@ export class AuthController {
   @Post('resend-verification')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard())
-  async resendVerificationMail(@Clt() client: Client): Promise<void> {
+  async resendVerificationMail(@Clt() client: ClientEntity): Promise<void> {
     await this.authService.resendVerificationMail(
       client.firstName,
       client.email,

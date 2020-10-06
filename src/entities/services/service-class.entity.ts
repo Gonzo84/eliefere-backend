@@ -2,7 +2,7 @@ import {
   Column, Entity, Index, ManyToOne, OneToOne, Unique, JoinColumn, PrimaryGeneratedColumn
 } from 'typeorm';
 // eslint-disable-next-line import/no-cycle
-import { Partner } from '..';
+import { PartnerEntity } from '..';
 // eslint-disable-next-line import/no-cycle
 import { VehicleDetailsEntity } from './vehicle-details.entity';
 
@@ -24,7 +24,7 @@ export class ServiceClassEntity {
   details: VehicleDetailsEntity;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ManyToOne((type) => Partner, (partner) => partner.service_class)
+  @ManyToOne((type) => PartnerEntity, (partner) => partner.service_class)
   @JoinColumn({ name: 'partner_id' })
-  partner: Partner;
+  partner: PartnerEntity;
 }
