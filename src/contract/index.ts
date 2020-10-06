@@ -7,8 +7,8 @@ export { INearestPartnersUntransformed } from './interfaces/nearest-partners-unt
 // models
 
 export { Client } from './models/users/client.model';
-export { Location } from './models/location.model';
-export { Partner } from './models/users/partner.model';
+export { LocationModel } from './models/location.model';
+export { PartnerModel } from './models/users/partner.model';
 
 // requests
 
@@ -24,6 +24,7 @@ export { UpdateClientRequest } from './request/user/client/update-client-request
 export { UpdatePartnerRequest } from './request/user/partner/update-partner-request.model';
 export { UpdateLocationRequest } from './request/location/update-location-request.model';
 export { NearestPartnersRequest } from './request/user/partner/nearest-partners-request.model';
+export { ServiceClassRequest } from './request/user/partner/service-class.request';
 
 // responses
 

@@ -1,9 +1,9 @@
-import { Partner } from '../../index';
+import { PartnerModel } from '../..';
 
 export class GetPartnerResponse {
-  partner: Partner;
+  partner: PartnerModel;
 
-  constructor(partner: Partner) {
+  constructor(partner: PartnerModel) {
     this.partner = partner;
   }
 }
