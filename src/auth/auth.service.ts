@@ -282,20 +282,27 @@ export class AuthService {
   }
 
   async login(loginRequest: LoginRequest): Promise<string> {
-    const clientEntity = await this.clientService.getClientEntityByUsernameOrEmail(
+    // test if login client
+    let userEntity = await this.clientService.getClientEntityByUsernameOrEmail(
       loginRequest.identifier,
     );
+    if (userEntity === null || userEntity === undefined) {
+      userEntity = await this.partnerService.getPartnerEntityByUsernameOrEmail(
+        loginRequest.identifier,
+      );
+    }
+
     if (
-      clientEntity === null || clientEntity === undefined
-      || !argon2.verify(clientEntity.passwordHash, loginRequest.password)
+      userEntity === null || userEntity === undefined
+      || !argon2.verify(userEntity.passwordHash, loginRequest.password)
     ) {
       throw new UnauthorizedException();
     }
 
     const payload: JwtPayload = {
-      id: clientEntity.id,
-      email: clientEntity.email,
-      username: clientEntity.username,
+      id: userEntity.id,
+      email: userEntity.email,
+      username: userEntity.username,
     };
 
     return this.jwtService.signAsync(payload);
