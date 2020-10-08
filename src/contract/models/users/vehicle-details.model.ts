@@ -3,8 +3,8 @@ import { VehiclePhotosModel } from './vehicle-photos.model';
 
 export class VehicleDetailsModel {
   @ApiProperty()
-  verified: boolean;
+  verified?: boolean;
 
   @ApiProperty()
-  photos: VehiclePhotosModel[];
+  photos?: VehiclePhotosModel[];
 }

@@ -1,16 +1,24 @@
 import {
-  BadRequestException, ConflictException, Injectable, Logger, NotFoundException,
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { validate } from 'class-validator';
 import { Repository } from 'typeorm';
 
-import { PartnerEntity, ServiceClassEntity, VehicleDetailsEntity } from '../entities';
+import {
+  PartnerEntity,
+  ServiceClassEntity,
+} from '../entities';
 import {
   NearestPartnersRequest, SignupRequest, INearestPartnersUntransformed, ServiceClassRequest,
 } from '../contract';
 import { toPartnerEntity } from './partner.mapper';
 import { LocationService } from '../location/location.service';
+import { ServiceClassService } from './service-class.service';
 
 @Injectable()
 export class PartnerService {
@@ -18,6 +26,7 @@ export class PartnerService {
     @InjectRepository(PartnerEntity)
     private readonly partnerRepository: Repository<PartnerEntity>,
     private readonly locationService: LocationService,
+    private serviceClassService: ServiceClassService,
   ) {
   }
 
@@ -99,27 +108,9 @@ export class PartnerService {
     }
   }
 
-  public async postServiceClass(serviceClassRequest: ServiceClassRequest) {
-    // const partnerEntity = await this.partnerRepository.findOne(serviceClassRequest.partnerId);
-    // if (partnerEntity === null || partnerEntity === undefined) {
-    //   Logger.warn(
-    //     `Password change of non-existent account with id ${serviceClassRequest.partnerId} is rejected.`,
-    //   );
-    //   throw new NotFoundException();
-    // }
-    // const serviceClass = new ServiceClassEntity();
-    // serviceClass.partnerId = serviceClassRequest.partnerId;
-    // serviceClass.type_of_service = serviceClassRequest.type_of_service;
-    // // const vehicleDetails = new VehicleDetailsEntity();
-    // // vehicleDetails.verified = serviceClassRequest.details.verified;
-    // // serviceClass.details = vehicleDetails;
-    // partnerEntity.service_class = [...partnerEntity.service_class, serviceClass];
-    // try {
-    //   await this.partnerRepository.update(partnerEntity.id, { ...partnerEntity });
-    // } catch (err) {
-    //   Logger.warn(JSON.stringify(err));
-    //   throw new BadRequestException();
-    // }
+  public async postServiceClass(serviceClassRequest: ServiceClassRequest): Promise<ServiceClassEntity> {
+    const partnerEntity = await this.getPartnerEntityById(serviceClassRequest.partnerId);
+    return this.serviceClassService.saveSerivceClass(serviceClassRequest, partnerEntity);
   }
 
   private static async validatePartner(partner: PartnerEntity): Promise<void> {
