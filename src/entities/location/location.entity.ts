@@ -6,11 +6,11 @@ import { PartnerEntity } from '..';
 import { LocationModel } from '../../contract';
 
 @Entity('locations')
-@Unique('unique_partner_location_id', ['partnerId'])
-@Index('index_partner_location_id', ['partnerId'])
+@Unique('unique_partner_location_id', ['partner_id'])
+@Index('index_partner_location_id', ['partner_id'])
 export class LocationEntity {
   @PrimaryColumn()
-  partnerId: number;
+  partner_id: number;
 
   @Column({
     type: 'geometry',
@@ -22,6 +22,6 @@ export class LocationEntity {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @OneToOne((type) => PartnerEntity, (partner) => partner.id)
-  @JoinColumn({ name: 'partnerId' })
+  @JoinColumn({ name: 'partner_id' })
   partner: PartnerEntity;
 }

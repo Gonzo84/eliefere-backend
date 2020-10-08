@@ -100,7 +100,7 @@ class SeedDB {
         hash,
       );
       const serviceClassRequest: ServiceClassRequest = {
-        partnerId: partner.id,
+        partner_id: partner.id,
         type_of_service: typeOfServicesArr[Math.floor(Math.random() * typeOfServicesArr.length)],
         details: {
           verified: false,

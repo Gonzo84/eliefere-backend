@@ -73,13 +73,13 @@ export class PartnerService {
   }
 
   public async updatePassword(
-    partnerId: number,
+    partner_id: number,
     passwordHash: string,
   ): Promise<void> {
-    const partnerEntity = await this.partnerRepository.findOne(partnerId);
+    const partnerEntity = await this.partnerRepository.findOne(partner_id);
     if (partnerEntity === null || partnerEntity === undefined) {
       Logger.warn(
-        `Password change of non-existent account with id ${partnerId} is rejected.`,
+        `Password change of non-existent account with id ${partner_id} is rejected.`,
       );
       throw new NotFoundException();
     }
@@ -109,7 +109,7 @@ export class PartnerService {
   }
 
   public async postServiceClass(serviceClassRequest: ServiceClassRequest): Promise<ServiceClassEntity> {
-    const partnerEntity = await this.getPartnerEntityById(serviceClassRequest.partnerId);
+    const partnerEntity = await this.getPartnerEntityById(serviceClassRequest.partner_id);
     return this.serviceClassService.saveSerivceClass(serviceClassRequest, partnerEntity);
   }
 

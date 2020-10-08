@@ -1,5 +1,5 @@
 import {
-  Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn,
+  Column, Entity, Index, JoinColumn, OneToMany, OneToOne, PrimaryColumn, Unique,
 } from 'typeorm';
 // eslint-disable-next-line import/no-cycle
 import { VehiclePhotoEntity } from './vehicle-photo.entity';
@@ -7,16 +7,18 @@ import { VehiclePhotoEntity } from './vehicle-photo.entity';
 import { ServiceClassEntity } from './service-class.entity';
 
 @Entity('vehicle-details')
+@Unique('unique_vehicle_details_id', ['service_id'])
+@Index('index_vehicle_details_id', ['service_id'])
 export class VehicleDetailsEntity {
   @PrimaryColumn()
-  serviceId: number;
+  service_id: number;
 
   @Column()
   verified: boolean;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @OneToOne((type) => ServiceClassEntity, (sc) => sc.details)
-  @JoinColumn({ name: 'serviceId' })
+  @JoinColumn({ name: 'service_id' })
   service: ServiceClassEntity;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

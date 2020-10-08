@@ -5,5 +5,5 @@ import { ServiceClassModel } from '../../../models/users/service-class.model';
 export class ServiceClassRequest extends ServiceClassModel {
   @ApiProperty()
   @IsDefined()
-  partnerId: number;
+  partner_id: number;
 }

@@ -27,7 +27,7 @@ export function toNearestPartnerModel(data: any[]): INearestPartners[] {
   return data.map((nearest) => {
     const { partner } = nearest;
     const { location } = nearest;
-    delete location.partnerId;
+    delete location.partner_id;
     delete location.type;
     delete partner.passwordHash;
     delete partner.modifiedOn;
@@ -73,7 +73,7 @@ export function updatePartnerEntityFields(
   } else {
     location = new LocationEntity();
     location = partnerModel.location;
-    location.partnerId = partnerModel.id;
+    location.partner_id = partnerModel.id;
   }
   updatedPartnerEntity.location = location;
   return updatedPartnerEntity;

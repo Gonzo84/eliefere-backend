@@ -1,7 +1,7 @@
 import { LocationModel, PartnerModel } from '..';
 
 export interface INearestPartnersUntransformed {
-  partnerId: number;
+  partner_id: number;
   location: LocationModel;
   partner: PartnerModel
 }
