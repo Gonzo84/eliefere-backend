@@ -1,6 +1,7 @@
 import {
   Column, Entity, Index, JoinColumn, OneToMany, OneToOne, PrimaryColumn, Unique,
 } from 'typeorm';
+import { IsBoolean } from 'class-validator';
 // eslint-disable-next-line import/no-cycle
 import { VehiclePhotoEntity } from './vehicle-photo.entity';
 // eslint-disable-next-line import/no-cycle
@@ -13,7 +14,8 @@ export class VehicleDetailsEntity {
   @PrimaryColumn()
   service_id: number;
 
-  @Column()
+  @IsBoolean()
+  @Column('boolean', { default: false })
   verified: boolean;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
