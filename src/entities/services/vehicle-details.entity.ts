@@ -1,5 +1,11 @@
 import {
-  Column, Entity, Index, JoinColumn, OneToMany, OneToOne, PrimaryColumn, Unique,
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { IsBoolean } from 'class-validator';
 // eslint-disable-next-line import/no-cycle
@@ -8,10 +14,12 @@ import { VehiclePhotoEntity } from './vehicle-photo.entity';
 import { ServiceClassEntity } from './service-class.entity';
 
 @Entity('vehicle-details')
-@Unique('unique_vehicle_details_id', ['service_id'])
-@Index('index_vehicle_details_id', ['service_id'])
+@Index('index_vehicle_details_service_id', ['service_id'])
 export class VehicleDetailsEntity {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({ nullable: true })
   service_id: number;
 
   @IsBoolean()

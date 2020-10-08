@@ -16,7 +16,7 @@ import { PartnerService } from './partner.service';
 import { PartnerEntity } from '../entities';
 import { Patnr } from './partner.decorator';
 import { toNearestPartnerModel, updatePartnerEntityFields } from './partner.mapper';
-import { UpdatePartnerRequest, NearestPartnersRequest, ServiceClassRequest } from '../contract';
+import { UpdatePartnerRequest, NearestPartnersRequest, ServiceClassRequest, PostServiceClassResponse } from '../contract';
 import { PostNearestPartnersResponse } from '../contract/response/partner/post-nearest-partners-response.model';
 
 @ApiTags('partners')
@@ -56,9 +56,8 @@ export class PartnerController {
   // @UseGuards(AuthGuard())
   async serviceClass(
     @Body() serviceClassRequest: ServiceClassRequest,
-  ): Promise<void> {
+  ): Promise<PostServiceClassResponse> {
     // eslint-disable-next-line max-len
-    this.partnerService.postServiceClass(serviceClassRequest);
-    // return new PostServiceClassResponse(toServiceClassModel(await this.partnerService.postServiceClass(serviceClassRequest)));
+    return new PostServiceClassResponse(await this.partnerService.postServiceClass(serviceClassRequest));
   }
 }

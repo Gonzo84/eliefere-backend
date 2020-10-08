@@ -39,3 +39,4 @@ export {
 export { GetClientResponse } from './response/client/get-client-response.model';
 // eslint-disable-next-line import/named,import/no-cycle
 export { GetPartnerResponse } from './response/partner/get-partner-response.model';
+export { PostServiceClassResponse } from './response/partner/post-service-class-response.model';

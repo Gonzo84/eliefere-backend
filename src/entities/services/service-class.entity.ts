@@ -4,9 +4,8 @@ import {
   Index,
   ManyToOne,
   OneToOne,
-  Unique,
   JoinColumn,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 // eslint-disable-next-line import/no-cycle
 import { PartnerEntity } from '..';
@@ -14,10 +13,12 @@ import { PartnerEntity } from '..';
 import { VehicleDetailsEntity } from './vehicle-details.entity';
 
 @Entity('service-class')
-@Unique('unique_partner_service_class_id', ['partner_id'])
-@Index('index_partner_service_class_id', ['partner_id'])
+@Index('index_service_class_type_of_service', ['type_of_service'])
 export class ServiceClassEntity {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({ nullable: true })
   partner_id: number;
 
   @Column()
