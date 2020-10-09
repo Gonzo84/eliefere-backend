@@ -1,5 +1,9 @@
 import {
-  BadRequestException, ConflictException, Injectable, Logger, NotFoundException,
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { validate } from 'class-validator';
@@ -7,7 +11,11 @@ import { Repository } from 'typeorm';
 
 import { isEmpty } from 'lodash';
 import {
-  PartnerEntity, ServiceClassEntity, VehicleDetailsEntity, VehiclePhotoEntity,
+  PartnerEntity,
+  ServiceClassEntity,
+  TypesOfServiceEntity,
+  VehicleDetailsEntity,
+  VehiclePhotoEntity,
 } from '../entities';
 import { ServiceClassRequest } from '../contract';
 import { VehiclePhotosModel } from '../contract/models/users/vehicle-photos.model';
@@ -21,7 +29,18 @@ export class ServiceClassService {
     private readonly vdRepository: Repository<VehicleDetailsEntity>,
     @InjectRepository(VehiclePhotoEntity)
     private readonly vpRepository: Repository<VehiclePhotoEntity>,
+    @InjectRepository(TypesOfServiceEntity)
+    private readonly tosRepository: Repository<TypesOfServiceEntity>,
   ) {
+  }
+
+  public async getTypesOfService(): Promise<TypesOfServiceEntity[]> {
+    try {
+      return this.tosRepository.find();
+    } catch (err) {
+      Logger.error(JSON.stringify(err));
+      throw new ConflictException();
+    }
   }
 
   public async saveSerivceClass(

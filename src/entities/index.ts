@@ -15,3 +15,5 @@ export { ServiceClassEntity } from './services/service-class.entity';
 export { VehicleDetailsEntity } from './services/vehicle-details.entity';
 // eslint-disable-next-line import/no-cycle
 export { VehiclePhotoEntity } from './services/vehicle-photo.entity';
+
+export { TypesOfServiceEntity } from './services/types-of-service.entity';

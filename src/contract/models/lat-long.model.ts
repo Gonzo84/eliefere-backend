@@ -9,4 +9,8 @@ export class LatLong {
   @IsNotEmpty()
   @ApiProperty()
   long: string;
+
+  @IsNotEmpty()
+  @ApiProperty()
+  number: string;
 }

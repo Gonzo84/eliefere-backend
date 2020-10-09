@@ -8,16 +8,38 @@ import {
   ServiceClassEntity,
   VehicleDetailsEntity,
   VehiclePhotoEntity,
+  TypesOfServiceEntity,
 } from '../entities';
 import { ClientService } from '../client/client.service';
 import { PartnerService } from '../partner/partner.service';
 import { LocationService } from '../location/location.service';
 import { ServiceClassService } from '../partner/service-class.service';
-import { ServiceClassRequest } from '../contract';
+import { ServiceClassRequest, TypesOfServiceEnum } from '../contract';
+
+class SeedTypeOfService {
+  public async run() {
+    const connection = getConnection();
+    const typesOfSeriviceRepo = connection.getRepository(TypesOfServiceEntity);
+    const tosArr = await typesOfSeriviceRepo.find();
+    console.log('tosArr ', tosArr);
+    if (tosArr && tosArr.length === 0) {
+      const typesOfService = TypesOfServiceEnum;
+      // eslint-disable-next-line no-restricted-syntax
+      for (const [key, value] of Object.entries(typesOfService)) {
+        const newTOSEntity = new TypesOfServiceEntity();
+        newTOSEntity.name = value;
+        // eslint-disable-next-line no-await-in-loop
+        await typesOfSeriviceRepo.save(newTOSEntity);
+      }
+    }
+  }
+}
+
+const seedTOS = new SeedTypeOfService();
 
 class SeedDB {
   // eslint-disable-next-line class-methods-use-this
-  public async run(lat: string, long: string) {
+  public async run(lat: string, long: string, number = 10) {
     const seedId = Date.now()
       .toString()
       .split('')
@@ -37,14 +59,14 @@ class SeedDB {
     // const connection = await createConnection(opt as ConnectionOptions);
     const connection = getConnection();
     const hash = await argon2.hash(seedId);
-    await SeedDB.seedClients(connection, seedId, hash);
-    await SeedDB.seedPartner(connection, seedId, hash, lat, long);
+    await SeedDB.seedClients(connection, seedId, hash, number);
+    await SeedDB.seedPartner(connection, seedId, hash, lat, long, number);
   }
 
-  private static async seedClients(connection, seedId, hash) {
+  private static async seedClients(connection, seedId, hash, number) {
     const clientService = new ClientService(connection.getRepository(ClientEntity));
     let index = 0;
-    while (index < 10) {
+    while (index < number) {
       // eslint-disable-next-line no-plusplus
       index++;
       const clientEntity = {
@@ -63,23 +85,28 @@ class SeedDB {
     }
   }
 
-  private static async seedPartner(connection, seedId, hash, lat, long) {
+  private static async seedPartner(connection, seedId, hash, lat, long, number) {
     const latitude = lat ? parseFloat(lat) : 49.502074;
     const longitude = long ? parseFloat(long) : 8.485755;
     const typeOfServicesArr = ['courier', 'small_car', 'regular_car', 'big_car', 'van', 'truck'];
     // eslint-disable-next-line max-len
     const serviceClassRepo = connection.getRepository(ServiceClassEntity);
     const vehicleDetailsRepo = connection.getRepository(VehicleDetailsEntity);
-    const cehiclePhotoRepo = connection.getRepository(VehiclePhotoEntity);
-
+    const vehiclePhotoRepo = connection.getRepository(VehiclePhotoEntity);
+    const typesOfSeriviceRepo = connection.getRepository(TypesOfServiceEntity);
 
     const partnerService = new PartnerService(
       connection.getRepository(PartnerEntity),
       new LocationService(connection.getRepository(LocationEntity)),
-      new ServiceClassService(serviceClassRepo, vehicleDetailsRepo, cehiclePhotoRepo),
+      new ServiceClassService(
+        serviceClassRepo,
+        vehicleDetailsRepo,
+        vehiclePhotoRepo,
+        typesOfSeriviceRepo,
+      ),
     );
     let index = 0;
-    while (index < 10) {
+    while (index < number) {
       // eslint-disable-next-line no-plusplus
       index++;
       const partnerEntity = {
@@ -115,10 +142,12 @@ class SeedDB {
       };
       // eslint-disable-next-line no-await-in-loop
       await partnerService.postServiceClass(serviceClassRequest);
+      // eslint-disable-next-line no-await-in-loop
+      await seedTOS.run();
     }
   }
 }
 
 const seedDb = new SeedDB();
 
-export { seedDb };
+export { seedDb, seedTOS };

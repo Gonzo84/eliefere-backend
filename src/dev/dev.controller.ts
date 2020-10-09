@@ -1,9 +1,10 @@
 import {
-  Controller, Get, HttpCode, HttpStatus, Query,
+  Controller, Get, HttpCode, HttpStatus, Query, UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { seedDb } from '../scripts/seed';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { seedDb, seedTOS } from '../scripts/seed';
 import { LatLong } from '../contract/models/lat-long.model';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('dev')
 @Controller('dev')
@@ -12,8 +13,18 @@ export class DevController {
   @HttpCode(HttpStatus.OK)
   async seedDB(
     @Query() query: LatLong,
-  ): Promise<void> {
-    const { lat, long } = query;
-    seedDb.run(lat, long);
+  ): Promise<string> {
+    const { lat, long, number } = query;
+    await seedDb.run(lat, long, parseInt(number, 10));
+    return 'alles okay';
+  }
+
+  // @ApiBearerAuth()
+  @Get('seed-tos')
+  @HttpCode(HttpStatus.OK)
+  // @UseGuards(AuthGuard())
+  async seedTOS(): Promise<string> {
+    await seedTOS.run();
+    return 'alles okay';
   }
 }

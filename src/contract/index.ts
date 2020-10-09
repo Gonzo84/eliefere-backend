@@ -40,3 +40,6 @@ export { GetClientResponse } from './response/client/get-client-response.model';
 // eslint-disable-next-line import/named,import/no-cycle
 export { GetPartnerResponse } from './response/partner/get-partner-response.model';
 export { PostServiceClassResponse } from './response/partner/post-service-class-response.model';
+export { GetTypesOfServiceResponse } from './response/partner/get-types-of-service-response.model';
+
+export { TypesOfServiceEnum } from './enums/types-of-service.enum';

@@ -6,6 +6,7 @@ import { PartnerService } from './partner.service';
 import {
   PartnerEntity,
   ServiceClassEntity,
+  TypesOfServiceEntity,
   VehicleDetailsEntity,
   VehiclePhotoEntity,
 } from '../entities';
@@ -17,7 +18,13 @@ import { ServiceClassService } from './service-class.service';
   providers: [PartnerService, ServiceClassService],
   imports: [
     TypeOrmModule.forFeature(
-      [PartnerEntity, ServiceClassEntity, VehicleDetailsEntity, VehiclePhotoEntity],
+      [
+        PartnerEntity,
+        ServiceClassEntity,
+        VehicleDetailsEntity,
+        VehiclePhotoEntity,
+        TypesOfServiceEntity,
+      ],
     ),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     LocationModule,

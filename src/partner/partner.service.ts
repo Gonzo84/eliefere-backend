@@ -12,6 +12,7 @@ import { Repository } from 'typeorm';
 import {
   PartnerEntity,
   ServiceClassEntity,
+  TypesOfServiceEntity,
 } from '../entities';
 import {
   NearestPartnersRequest, SignupRequest, INearestPartnersUntransformed, ServiceClassRequest,
@@ -108,7 +109,9 @@ export class PartnerService {
     }
   }
 
-  public async postServiceClass(serviceClassRequest: ServiceClassRequest): Promise<ServiceClassEntity> {
+  public async postServiceClass(
+    serviceClassRequest: ServiceClassRequest,
+  ): Promise<ServiceClassEntity> {
     const partnerEntity = await this.getPartnerEntityById(serviceClassRequest.partner_id);
     return this.serviceClassService.saveSerivceClass(serviceClassRequest, partnerEntity);
   }
@@ -120,5 +123,9 @@ export class PartnerService {
     if (errors.length > 0) {
       throw new BadRequestException(errors);
     }
+  }
+
+  public async getTypesOfService(): Promise<TypesOfServiceEntity[]> {
+    return this.serviceClassService.getTypesOfService();
   }
 }
