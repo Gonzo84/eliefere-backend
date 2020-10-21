@@ -32,4 +32,7 @@ export default {
     resetPasswordUrl: 'http://localhost:xxxx/reset-password',
     termsOfServiceUrl: 'http://localhost:xxxx/legal/terms',
   },
+  osrm: {
+    server: 'http://osrm:5000/',
+  },
 };

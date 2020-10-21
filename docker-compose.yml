@@ -22,6 +22,7 @@ services:
     depends_on:
       - redis
       - postgres
+      - osrm
   redis:
     container_name: redis
     image: redis:5-alpine
@@ -41,6 +42,17 @@ services:
       - ${DB_PORT}:${DB_PORT}
     volumes:
       - pgdata:/var/lib/postgresql/data
+  osrm:
+    container_name: osrm
+    image: osrm/osrm-backend
+    restart: always
+    ports:
+      - 5000:5000
+    volumes:
+      - /home/gonzo/workspace/routing_machine/data:/data
+    command: "osrm-routed --max-matching-size 1000 --max-table-size 1000 --max-viaroute-size 1000 --algorithm mld /data/baden-wuerttemberg-latest.osrm"
+    networks:
+      - webnet
 networks:
   webnet:
 volumes:

@@ -88,7 +88,7 @@ class SeedDB {
   private static async seedPartner(connection, seedId, hash, lat, long, number) {
     const latitude = lat ? parseFloat(lat) : 49.502074;
     const longitude = long ? parseFloat(long) : 8.485755;
-    const typeOfServicesArr = ['courier', 'small_car', 'regular_car', 'big_car', 'van', 'truck'];
+    const typeOfServicesArr = ['courier', 'bike', 'regular_car', 'big_car', 'van', 'truck'];
     // eslint-disable-next-line max-len
     const serviceClassRepo = connection.getRepository(ServiceClassEntity);
     const vehicleDetailsRepo = connection.getRepository(VehicleDetailsEntity);

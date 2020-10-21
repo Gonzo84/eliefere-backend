@@ -8,6 +8,7 @@ import { LocationModule } from './location/location.module';
 import { DevModule } from './dev/dev.module';
 
 import { configService } from './config/config.service';
+import { RoutingModule } from './routing/routing.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { configService } from './config/config.service';
     PartnerModule,
     LocationModule,
     DevModule, // TODO remove this on Production !!!
+    RoutingModule,
   ],
 })
 export class AppModule {
